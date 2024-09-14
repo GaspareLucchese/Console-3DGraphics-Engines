@@ -31,8 +31,8 @@ public class Display
     }
 
 
-    //Svuotiamo la matrice contenente il display
-    public void azzera()
+    //Empty the display matrix
+    public void reset()
     {
         for(int i = 0; i < DIMY; i++)
         {
@@ -43,13 +43,14 @@ public class Display
         }
     }
 
-    //Ogni singolo pixel viene aggiunto sullo schermo alla posizione corretta
-    public void aggiungiPunto(int x, int y, char c)
+    //Every pixel is added on the display matrix in the right position
+    public void addPoint(int x, int y, char c)
     {
         this.Monitor[y][x] = c;
     }
 
-    //Stampa in output tutti i pixel presenti in sullo schermo
+    
+    //Print all the the pixels on the monitor matrix
     public void stampa()
     {
         //STAMPA PER CARATTERE???
@@ -93,18 +94,17 @@ public class Display
             out += '\n';
         }
         System.out.println(out);
-        
     }
 
 
-    public void Rasterizza(Triangolo T, double [][] buf)
+    public void Rasterization(Triangle T, double [][] buf)
     {
         int ymin, ymax, xmin, xmax;
 
-        //Gestiamo i punti come già dati ordinati in senso antiorario
-        Punto3D p1 = T.getTriangolo()[0];
-        Punto3D p2 = T.getTriangolo()[1];
-        Punto3D p3 = T.getTriangolo()[2];
+        //We should manage all triangle's points as clockwise sorted
+        Point3D p1 = T.getTriangle()[0];
+        Point3D p2 = T.getTriangle()[1];
+        Point3D p3 = T.getTriangle()[2];
 
         ymin = (int) Math.min(Math.min(p1.getY(), p2.getY()), p3.getY());
         ymax = (int) Math.max(Math.max(p1.getY(), p2.getY()), p3.getY());
@@ -112,35 +112,36 @@ public class Display
         xmin = (int) Math.min(Math.min(p1.getX(), p2.getX()), p3.getX());
         xmax = (int) Math.max(Math.max(p1.getX(), p2.getX()), p3.getX());
         
-        //Iteriamo solo nel triangolo che contiene il triangolo
+        //We can iterate only in the triangle tha contains the triangle (??)
         for(int y = ymax; y >= ymin; y--)
         {
             for(int x = xmin; x <= xmax; x++)
             {
-                Punto2D p = new Punto2D(x, y);
+                Point2D p = new Point2D(x, y);
                 
                 //Il prodotto vettoriale ci permette di sapete se un determinato punto p è contenuto tra due vettori
-                double prod1 = prodotto_vettoriale(p1, p2, p);
-                double prod2 = prodotto_vettoriale(p2, p3, p);
-                double prod3 = prodotto_vettoriale(p3, p1, p);
+                //The cross product tell us if a given point p is between two vectors
+                double prod1 = cross_product(p1, p2, p);
+                double prod2 = cross_product(p2, p3, p);
+                double prod3 = cross_product(p3, p1, p);
 
                 //Non dovevano essere tutti e tre positivi????????
-                //Se è contenuto in tutti e tre i vettori e non usciamo fuori dallo schermo (???) aggiungiamo il punto
+                //If contained in all three vectors we can add the point 
                 if(((prod1 <= 0) && (prod2 <= 0) && (prod3 <= 0)) && (((int)Math.ceil(x) >= 0) && ((int)Math.ceil(y) >= 0) && ((int)Math.ceil(x) < DIMX) && ((int)Math.ceil(y) < DIMY)))
                 {
                     //Z-buffer da sistemare?????
-                    double z = calcolaZ(p1, p2, p3, p);
+                    double z = calculateZ(p1, p2, p3, p);
                     if(z <= buf[y][x])
                     {
                         buf[y][x] = z;
-                        aggiungiPunto(x, y, T.getLum());
+                        addPoint(x, y, T.getBrightness_char());
                     }
                 }
             }
         }
     }
     
-    public double prodotto_vettoriale(Punto3D p1, Punto3D p2, Punto2D prova)
+    public double cross_product(Point3D p1, Point3D p2, Point2D prova)
     {
         double ax = (p2.getX() - p1.getX());
         double ay = (p2.getY() - p1.getY());
@@ -151,10 +152,10 @@ public class Display
         return (ax*by - bx*ay);
     }
 
-    //Ricava tutti i valori di z dall'equazione del piano
-    public double calcolaZ(Punto3D vert1, Punto3D vert2, Punto3D vert3, Punto2D p)
+    //We obtain al the z values with the plane equation
+    public double calculateZ(Point3D vert1, Point3D vert2, Point3D vert3, Point2D p)
     {
-        //Equazione del piano passante per 3 punti
+        //Equation of the plane passing through 3 points
         double a = (vert2.getY() - vert1.getY())*(vert3.getZ() - vert1.getZ()) - (vert3.getY() - vert1.getY())*(vert2.getZ() - vert1.getZ());
         double b = (vert2.getZ() - vert1.getZ())*(vert3.getX() - vert1.getX()) - (vert3.getZ() - vert1.getZ())*(vert2.getX() - vert1.getX());
         double c = (vert2.getX() - vert1.getX())*(vert3.getY() - vert1.getY()) - (vert3.getX() - vert1.getX())*(vert2.getY() - vert1.getY());

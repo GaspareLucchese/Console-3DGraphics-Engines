@@ -1,7 +1,7 @@
-public class Punto3D extends Punto2D
+public class Point3D extends Point2D
 {
-    //Estendiamo il punto 2D
-    public Punto3D()
+    //We can extend the two dimensional point
+    public Point3D()
     {
         super();
         this.z = 0;
@@ -18,7 +18,7 @@ public class Punto3D extends Punto2D
         this.z = z;
     }
 
-    public Punto3D(double x, double y, double z)
+    public Point3D(double x, double y, double z)
     {
         super(x, y);
         this.setZ(z);

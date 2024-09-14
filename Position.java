@@ -1,12 +1,14 @@
-public class Posizione{
+public class Position{
+	
 	int x;
 	int y;
 
-	public Posizione()
+	public Position()
 	{
 
 	}
-	public Posizione(int x, int y)
+
+	public Position(int x, int y)
 	{
 		this.setXY(x, y);
 	}
@@ -31,7 +33,5 @@ public class Posizione{
 	public int getY()
 	{
 		return this.y;
-	}
-
-	
+	}	
 }

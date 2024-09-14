@@ -1,9 +1,9 @@
-public class Punto2D 
+public class Point2D 
 {
     private double x;
     private double y;
 
-    public Punto2D()
+    public Point2D()
     {
         this.x = 0;
         this.y = 0;
@@ -27,7 +27,7 @@ public class Punto2D
         this.y = y;
     }
 
-    public Punto2D(double x, double y)
+    public Point2D(double x, double y)
     {
         this.setX(x);
         this.setY(y);
