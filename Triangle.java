@@ -28,13 +28,12 @@ public class Triangle
 
     public Point3D[] getTriangle()
     {
-        Point3D[] tris = new Point3D[]{p1, p2, p3};
-        return tris;
+        return new Point3D[]{p1, p2, p3};
     }
    
     public String toString()
     {
-        return ("(" + p1 + p2 + p3 + ")");
+        return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
     }
 
     //Setter and getter methods for manage the brightness and its visualization

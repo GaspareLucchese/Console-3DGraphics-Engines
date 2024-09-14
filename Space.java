@@ -4,35 +4,35 @@ import java.util.List;
 public class Space
 {
 	//We can see the 3D space as a set of polygons (Triangles)
-    private List<Triangle> Space = new ArrayList<>();
+    private List<Triangle> space = new ArrayList<>();
 
     public void addTriangle(Triangle triangle)
     {
-        this.Space.add(triangle);
+        this.space.add(triangle);
     }
 
 	public void modifyTriangle(int i, Triangle triangle)
     {
-        this.Space.set(i, triangle);
+        this.space.set(i, triangle);
     }
 
 	//Setter method to modify the space
     public void setSpace(List<Triangle> Space)
     {
-        this.Space = Space;
+        this.space = Space;
     }
 
     public List<Triangle> getSpace()
     {
-        return this.Space;
+        return this.space;
     }
 
 	//With this method we can copy all the triangles in this space to another destination
     public void copySpace(Space new_space)
     {
-        for(int i = 0; i < this.Space.size(); i++)
+        for(int i = 0; i < this.space.size(); i++)
 		{
-			new_space.Space.add(i, (this.getSpace()).get(i));
+			new_space.space.add(i, (this.getSpace()).get(i));
 		}
     }
 

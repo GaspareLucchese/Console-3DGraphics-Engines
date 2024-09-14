@@ -43,8 +43,8 @@ public class ItemTrasformation extends Thread
             e.printStackTrace();
         }
 
+        
         //AGGIORNAMENTO FRAMES TEIERA
-
         Display display = new Display();
         Engine newEngine = new Engine();
         newEngine.setMovement(0, -1, 5);
@@ -56,43 +56,45 @@ public class ItemTrasformation extends Thread
             newEngine.setThetaZ(3*i);
             newEngine.Projects(faces, display, display.getMonitor());
             
-            //System.out.print("\033[H\033[2J");  
+            System.out.print("\033[H\033[2J");  
             System.out.flush();
-            display.stampa();
+            display.print();
             try
             {
-                Thread.sleep(1); 
+                Thread.sleep(16); 
             } 
             catch(Exception e)
             {} 
         }
+    
         
         //AGGIORNAMENTO FRAMES SCONCIO
-        /*
+        /* 
         Display display = new Display();
         Engine newEngine = new Engine();
         newEngine.distance = 155;
-        newEngine.muoviY = -25;
-        newEngine.muoviX = -40;
+        newEngine.moveY = -25;
+        newEngine.moveX = -40;
         for(int i = 0; i < 100; i++)
         {
-            display.azzera();
+            /*
+            display.reset();
             newEngine.setThetaX(-30);
             newEngine.setThetaY(225);
             newEngine.setThetaZ(0);
-            newEngine.Proietta(faces, display, display.getMonitor());
+            newEngine.Projects(faces, display, display.getMonitor());
             
             
-            display.azzera();
+            display.reset();
             newEngine.setThetaX(-15);
             newEngine.setThetaY(-5*i);
             newEngine.setThetaZ(0);
-            newEngine.Proietta(faces, display, display.getMonitor());
+            newEngine.Projects(faces, display, display.getMonitor());
             
             
-            //System.out.print("\033[H\033[2J");  
+            System.out.print("\033[H\033[2J");  
             System.out.flush();
-            display.stampa();
+            display.print();
             try
             {
                 Thread.sleep(1); 
@@ -102,6 +104,7 @@ public class ItemTrasformation extends Thread
 
             }
         }
-        */
+            */
+        
     }
 }

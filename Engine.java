@@ -10,11 +10,11 @@ public class Engine
     private double fThetaZ = Math.toRadians(0);
 
     //negativo = verso sinistra, positivo = verso destra
-    private double moveX = 0;
+    double moveX = 0;
     //negativo = verso il basso, positivo = verso l'alto
-    private double moveY = 0;
+    double moveY = 0;
     //negativo = dietro l'osservatore, positivo = di fronte l'osservatore
-    private double distance = 0;
+    double distance = 0;
 
     private double[][] matrixPerspective = new double[4][4];
     private double[][] matrixRotX = new double[4][4];

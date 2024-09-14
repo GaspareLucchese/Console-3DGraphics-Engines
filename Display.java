@@ -1,5 +1,3 @@
-import java.lang.String;
-
 public class Display 
 {
     //Dimensione dello schermo da visualizzare (costante)
@@ -51,7 +49,7 @@ public class Display
 
     
     //Print all the the pixels on the monitor matrix
-    public void stampa()
+    public void print()
     {
         //STAMPA PER CARATTERE???
         /*
@@ -84,6 +82,7 @@ public class Display
         */
         
         //STAMPA PER FRAME???
+        /*
         String out = "";
         for(int i = 0; i < DIMY; i++)
         {
@@ -92,6 +91,18 @@ public class Display
                out = out.concat("" + Monitor[i][j] + Monitor[i][j]);
             }
             out += '\n';
+        }
+        System.out.println(out);
+        */
+
+        StringBuilder out = new StringBuilder();
+        for(int i = 0; i < DIMY; i++)
+        {
+            for(int j = 0; j < DIMX; j++)
+            {
+                out.append(Monitor[i][j]).append(Monitor[i][j]);
+            }
+        out.append('\n');
         }
         System.out.println(out);
     }
@@ -119,7 +130,6 @@ public class Display
             {
                 Point2D p = new Point2D(x, y);
                 
-                //Il prodotto vettoriale ci permette di sapete se un determinato punto p è contenuto tra due vettori
                 //The cross product tell us if a given point p is between two vectors
                 double prod1 = cross_product(p1, p2, p);
                 double prod2 = cross_product(p2, p3, p);
