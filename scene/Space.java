@@ -1,5 +1,11 @@
+package scene;
+
+
 import java.util.ArrayList;
 import java.util.List;
+
+import geometry.Point3D;
+import geometry.Triangle;
 
 public class Space
 {

@@ -1,3 +1,4 @@
+package geometry;
 public class Triangle 
 {
     private double brightness_value = 0;

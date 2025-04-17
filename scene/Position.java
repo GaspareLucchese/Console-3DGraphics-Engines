@@ -1,3 +1,4 @@
+package scene;
 public class Position{
 	
 	int x;
