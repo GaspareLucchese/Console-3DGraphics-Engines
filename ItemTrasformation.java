@@ -51,9 +51,9 @@ public class ItemTrasformation extends Thread
         for(int i = 0; i < 10000; i++)
         {
             display.reset();
-            newEngine.setThetaX(-3*i);
-            newEngine.setThetaY(3*i);
-            newEngine.setThetaZ(3*i);
+            newEngine.setThetaX(-i);
+            newEngine.setThetaY(i);
+            newEngine.setThetaZ(i);
             newEngine.Projects(faces, display, display.getMonitor());
             
             System.out.print("\033[H\033[2J");  
@@ -61,7 +61,7 @@ public class ItemTrasformation extends Thread
             display.print();
             try
             {
-                Thread.sleep(16); 
+                Thread.sleep(20); 
             } 
             catch(Exception e)
             {} 

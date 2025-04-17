@@ -1,6 +1,6 @@
 public class Point3D extends Point2D
 {
-    //We can extend the two dimensional point
+    //We extend the two dimensional point
     public Point3D()
     {
         super();

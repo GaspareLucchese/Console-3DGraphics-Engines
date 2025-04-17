@@ -4,16 +4,18 @@ import java.util.List;
 
 public class Engine 
 {
-    /*Per le Rotazioni, da Sistemare*/
+    //[?]
+    //Angles to rotate the mesh
     private double fThetaX = Math.toRadians(0);
     private double fThetaY = Math.toRadians(0);
     private double fThetaZ = Math.toRadians(0);
 
-    //negativo = verso sinistra, positivo = verso destra
+    //Values for mesh translation
+    //negative = move to the left, positive = move to right
     double moveX = 0;
-    //negativo = verso il basso, positivo = verso l'alto
+    //negative = move down, positive = move up
     double moveY = 0;
-    //negativo = dietro l'osservatore, positivo = di fronte l'osservatore
+    //negative = behind the viewer, positive = in front of the viewer
     double distance = 0;
 
     private double[][] matrixPerspective = new double[4][4];
@@ -23,7 +25,7 @@ public class Engine
 
     public Engine()
     {
-        //Reset all the matrices
+        //Resetting all the matrices
         for(int i = 0; i < 4; i++)
         {
             for(int j = 0; j < 4; j++)
@@ -35,7 +37,7 @@ public class Engine
             }
         }
 
-        //Set the perspective matrix
+        //Setting the perspective matrix
         double fNear = 0.01;
         double fFar = 1000.0;
         double fFov = Math.toRadians(90.0);
@@ -48,6 +50,7 @@ public class Engine
         matrixPerspective[3][2] = -1.0;
         matrixPerspective[3][3] = 0;
 
+        //[?] non lo facciamo pure dopo?
         this.setMatrixRot();
         
     }
@@ -66,6 +69,7 @@ public class Engine
         normal = new Point3D();
         line1 = new Point3D();
         line2 = new Point3D();
+        //[?]
         //Gestiamo la direzione della luce (Sistemare?)
         light = new Point3D(0, 0, -1);
         //Normalize the lighting vector
@@ -74,9 +78,11 @@ public class Engine
         light.setY(light.getY()/lum);
         light.setZ(light.getZ()/lum);
 
-        //We can work on a copy of the space from input, so we can do not modify the space itself (SISTEMARE ?)
+        //[?]
+        //We can work on a copy of the space from input, so we can do not modify the space itself
         Space copy = new Space();
         space.copySpace(copy);
+        //[?]
         //Set all the rotation matrices
         this.setMatrixRot();
 
@@ -87,15 +93,16 @@ public class Engine
             Triangle tri = (space.getSpace()).get(l);
             Triangle triRotated = new Triangle();
 
-            //Un'eventuale scale va applicato prima della rotazione! (rivedere)
+            //[?]
+            //Un'eventuale scale va applicato prima della rotazione!
 
-            //We can apply the rotation to individual points
+            //We can now apply the rotation to individual points
             triRotated.setTriangle(MatrixMultiplication2(tri.getTriangle()[0], matrixRotX), MatrixMultiplication2(tri.getTriangle()[1], matrixRotX), MatrixMultiplication2(tri.getTriangle()[2], matrixRotX));
             triRotated.setTriangle(MatrixMultiplication2(triRotated.getTriangle()[0], matrixRotY), MatrixMultiplication2(triRotated.getTriangle()[1], matrixRotY), MatrixMultiplication2(triRotated.getTriangle()[2], matrixRotY));
             triRotated.setTriangle(MatrixMultiplication2(triRotated.getTriangle()[0], matrixRotZ), MatrixMultiplication2(triRotated.getTriangle()[1], matrixRotZ), MatrixMultiplication2(triRotated.getTriangle()[2], matrixRotZ));
 
-            
             Triangle triTranslated = new Triangle(triRotated.getTriangle()[0], triRotated.getTriangle()[1], triRotated.getTriangle()[2]);
+            //[??S]
             //Trasliamo il Triangolo (riv se necessaria la copia)
             //??controlliamo se la condizione nell'if è necessaria/da cambiare
             if(triTranslated.getTriangle()[0].getZ()+distance > 0)
@@ -140,12 +147,12 @@ public class Engine
             double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ(); 
 
             //Apply the Backface-culling (dot product between the triangle's vector and its normal)
-            //Applichiamo il backface-culling (prodotto scalare tra il vettore triangolo e la sua normal)
             if(normal.getX()*(triTranslated.getTriangle()[0].getX()) + normal.getY()*(triTranslated.getTriangle()[0].getY()) + normal.getZ()*(triTranslated.getTriangle()[0].getZ()) < 0)
             {
                 int nTriangoliClipping = 0;
                 Triangle[] Clipping = new Triangle[2];
 
+                //[?]
                 //(p Da togliere)
                 Point3D p = new Point3D(0, 0 ,0);
                 Triangle t1 = new Triangle(p, p, p), t2 = new Triangle(p, p, p);
@@ -159,10 +166,11 @@ public class Engine
                     //Apply the projection
                     Triangle triProjected = new Triangle(MatrixMultiplication(Clipping[n].getTriangle()[0], matrixPerspective), MatrixMultiplication(Clipping[n].getTriangle()[1], matrixPerspective), MatrixMultiplication(Clipping[n].getTriangle()[2], matrixPerspective));
 
+                    //[?]
                     /*Rivedere??? (Normalizziamo?)*/
                     if(true)
                     {
-                        //Center in the screen and scale based on the screen size
+                        //Center in screen and scale, based on the screen size
                         double centerX = 1;
                         double centerY = 1;
                         triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() + centerX);
@@ -183,6 +191,7 @@ public class Engine
                         triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() * b * h);
                     }
 
+                    //[?]
                     //Inizializziamo per lo z-buffer(???)         
                     triProjected.getTriangle()[0].setZ(Clipping[n].getTriangle()[0].getZ());
                     triProjected.getTriangle()[1].setZ(Clipping[n].getTriangle()[0].getZ());
@@ -200,6 +209,7 @@ public class Engine
         
         
         List <Triangle> triangleList = copy.getSpace();
+        //[?]
         //Riv non fa nulla???
         Collections.sort(triangleList, new Comparator<Triangle>() 
         {
@@ -212,6 +222,7 @@ public class Engine
             }
         });
         
+        //[???]
         //CLIPPING PER IL FRUSTUM (CONCLUDERE)
         /*
         ArrayList<Triangolo> Prova = new ArrayList<>();
@@ -269,11 +280,11 @@ public class Engine
     
         //We change the space with new triangles
         copy.setSpace(triangleList);
-        //Visualize the point on the monitor
+        //Visualizing the point on monitor
         Draw(Monitor, monitor, copy);
     }
 
-    //For Matrix Multiplications
+    //To calculate mtrix multiplications
     public Point3D MatrixMultiplication(Point3D i, double[][] m)
     {
         Point3D o = new Point3D();
@@ -303,12 +314,14 @@ public class Engine
 
     public char[][] Draw(Display Monitor, char[][] schermo, Space space)
     {
+        //[?]
         //Z-buffer (da Sistemare???)
         double[][] Buffer = new double[Display.getDIMY()][Display.getDIMX()];
         for(int i = 0; i < Display.getDIMY(); i++)
         {
             for(int j = 0; j < Display.getDIMX(); j++)
             {
+                //[?]
                 //Inizializziamo il più lontano possibile (???)
                 Buffer[i][j] = 999999;
             }
@@ -317,6 +330,7 @@ public class Engine
         for(int l = 0; l < (space.getSpace()).size(); l++)
         {
             Triangle triTranslated = (space.getSpace()).get(l);
+            //[?]
             //We have to verify that triangle's vertices are inside the display, and their value should be the smallest in the Z-buffer (Riv?)
             if((int)Math.ceil(triTranslated.getTriangle()[0].getX()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[0].getX()) < Display.getDIMX() && (int)Math.ceil(triTranslated.getTriangle()[0].getY()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[0].getY()) < Display.getDIMY() && triTranslated.getTriangle()[0].getZ() < Buffer[(int)Math.ceil(triTranslated.getTriangle()[0].getY())][(int)Math.ceil(triTranslated.getTriangle()[0].getX())])
             {
@@ -383,7 +397,7 @@ public class Engine
         return this.fThetaZ;
     }
 
-    //To setting the rotation matrices
+    //To set rotation matrices
     public void setMatrixRot()
     {
         this.matrixRotX[0][0] =  1;
@@ -408,7 +422,7 @@ public class Engine
         this.matrixRotZ[3][3] =  1;
     }
 
-    //???
+    //[???]
     public Point3D Vector_IntersectsPlane(Point3D Plane_p, Point3D Plane_n, Point3D lineStart, Point3D lineEnd)
     {
         double Norm_n = Math.sqrt(Plane_n.getX()*Plane_n.getX() + Plane_n.getY()*Plane_n.getY() + Plane_n.getZ()*Plane_n.getZ());
@@ -425,7 +439,7 @@ public class Engine
         return new Point3D(lineStart.getX() + lineToIntersect.getX(), lineStart.getY() + lineToIntersect.getY(), lineStart.getZ() + lineToIntersect.getZ());
     }
 
-    //???
+    //[???]
     public int Triangle_Clipped_Plane(Point3D Plane_p, Point3D Plane_n, Triangle in_tri, Triangle out_tri1, Triangle out_tri2)
     {
         //Normalize the plane's normal
@@ -520,7 +534,7 @@ public class Engine
         return 0;
     }
 
-    //???
+    //[???]
     public double distance(Point3D p, Point3D Plane_n, Point3D Plane_p)
     {
     ///////////////////////////?????normalizza
