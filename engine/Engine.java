@@ -1,6 +1,13 @@
+package engine;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import display.Display;
+import geometry.Point3D;
+import geometry.Triangle;
+import scene.Space;
 
 public class Engine 
 {

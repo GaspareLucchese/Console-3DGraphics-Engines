@@ -1,3 +1,4 @@
+package scene;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -5,12 +6,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.Engine;
+import geometry.Point3D;
+import display.Display;
+import geometry.Triangle;
+
 public class ItemTrasformation extends Thread
 {
     public static void main(String[] args) 
     {
         //Object's Path (WSL)
-        String path = "/mnt/c/users/lucch/Desktop/3D_Engine/Teapot.txt";
+        String path = "/mnt/c/users/lucch/Desktop/3D_Engine/scene/Teapot.txt";
         //Object's Path (cmd / Visual Studio Code Terminal)
         //String path = "C:\\Users\\lucch\\Desktop\\3D_Engine\\Teapot.txt";
 

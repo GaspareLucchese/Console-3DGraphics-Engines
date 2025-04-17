@@ -1,3 +1,4 @@
+package geometry;
 public class Point3D extends Point2D
 {
     //We extend the two dimensional point
