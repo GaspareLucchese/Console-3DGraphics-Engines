@@ -29,4 +29,15 @@ public class Point3D extends Point2D
 	{
 		return ("( " + this.getX() + " , " + this.getY() + " , " + this.getZ() + " )");
 	}
+
+    public double dotProduct(Point3D p)
+    {
+        return this.getX() * p.getX() + this.getY() * p.getY() + this.getZ() * p.getZ();
+    }
+
+    public Point3D normalized() {
+        double length = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
+        return new Point3D( this.getX()/ length, this.getY() / length, this.getZ() / length);
+    }
+    
 }

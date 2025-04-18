@@ -37,6 +37,44 @@ public class Triangle
         return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
     }
 
+    public Point3D normal()
+    {
+        Point3D normal = new Point3D();
+        Point3D line1 = new Point3D();
+        Point3D line2 = new Point3D();
+
+        //Calculate the triangle's cross product...
+        line1.setX(this.getTriangle()[1].getX() - this.getTriangle()[0].getX());
+        line1.setY(this.getTriangle()[1].getY() - this.getTriangle()[0].getY());
+        line1.setZ(this.getTriangle()[1].getZ() - this.getTriangle()[0].getZ());
+
+        line2.setX(this.getTriangle()[2].getX() - this.getTriangle()[0].getX());
+        line2.setY(this.getTriangle()[2].getY() - this.getTriangle()[0].getY());
+        line2.setZ(this.getTriangle()[2].getZ() - this.getTriangle()[0].getZ());
+
+        //... to obtain the normal (that we should normalize)
+        normal.setX(line1.getY()*line2.getZ() - line1.getZ()*line2.getY());
+        normal.setY(line1.getZ()*line2.getX() - line1.getX()*line2.getZ());
+        normal.setZ(line1.getX()*line2.getY() - line1.getY()*line2.getX());
+
+        double lung = Math.sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
+        normal.setX(normal.getX()/lung);
+        normal.setY(normal.getY()/lung);
+        normal.setZ(normal.getZ()/lung);
+
+        return normal;
+    }
+
+    public Point3D getCentroid()
+    {
+        Point3D centroid = new Point3D(
+        (this.getTriangle()[0].getX() + this.getTriangle()[1].getX() + this.getTriangle()[2].getX()) / 3.0,
+        (this.getTriangle()[0].getY() + this.getTriangle()[1].getY() + this.getTriangle()[2].getY()) / 3.0,
+        (this.getTriangle()[0].getZ() + this.getTriangle()[1].getZ() + this.getTriangle()[2].getZ()) / 3.0);
+
+        return centroid;
+    }
+
     //Setter and getter methods for manage the brightness and its visualization
     public void setBrightness_char(double lum)
     {

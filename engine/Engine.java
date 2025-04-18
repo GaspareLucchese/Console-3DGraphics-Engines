@@ -1,13 +1,10 @@
 package engine;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import display.Display;
 import geometry.Point3D;
 import geometry.Triangle;
 import scene.Space;
+import application.BackfaceCulling;
 
 public class Engine 
 {
@@ -72,10 +69,8 @@ public class Engine
     //Calculate the position of new points in the space after the projection
     public void Projects(Space space, Display Monitor, char monitor[][])
     {
-        Point3D normal, line1, line2, light;
-        normal = new Point3D();
-        line1 = new Point3D();
-        line2 = new Point3D();
+        Point3D normal, light;
+        
         //[?]
         //Gestiamo la direzione della luce (Sistemare?)
         light = new Point3D(0, 0, -1);
@@ -88,12 +83,12 @@ public class Engine
         //[?]
         //We can work on a copy of the space from input, so we can do not modify the space itself
         Space copy = new Space();
-        space.copySpace(copy);
+        
         //[?]
         //Set all the rotation matrices
         this.setMatrixRot();
 
-        
+
         for(int l = 0; l < (space.getSpace()).size(); l++)
         {
             //We extract all the tringles in the space
@@ -131,162 +126,55 @@ public class Engine
                 triTranslated.getTriangle()[2].setY(triTranslated.getTriangle()[2].getY() + moveY);
             }
 
-            //Calcolutate the triangle's cross product...
-            line1.setX(triTranslated.getTriangle()[1].getX() - triTranslated.getTriangle()[0].getX());
-            line1.setY(triTranslated.getTriangle()[1].getY() - triTranslated.getTriangle()[0].getY());
-            line1.setZ(triTranslated.getTriangle()[1].getZ() - triTranslated.getTriangle()[0].getZ());
-
-            line2.setX(triTranslated.getTriangle()[2].getX() - triTranslated.getTriangle()[0].getX());
-            line2.setY(triTranslated.getTriangle()[2].getY() - triTranslated.getTriangle()[0].getY());
-            line2.setZ(triTranslated.getTriangle()[2].getZ() - triTranslated.getTriangle()[0].getZ());
-
-            //... to obtain the normal (that we should normalize)
-            normal.setX(line1.getY()*line2.getZ() - line1.getZ()*line2.getY());
-            normal.setY(line1.getZ()*line2.getX() - line1.getX()*line2.getZ());
-            normal.setZ(line1.getX()*line2.getY() - line1.getY()*line2.getX());
-
-            double lung = Math.sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
-            normal.setX(normal.getX()/lung);
-            normal.setY(normal.getY()/lung);
-            normal.setZ(normal.getZ()/lung);
+            normal = triTranslated.normal();
     
             //To obtain the brightness value we should apply the dot product between the light vector and the triangle's normal vector 
-            double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ(); 
+            double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ();
 
-            //Apply the Backface-culling (dot product between the triangle's vector and its normal)
-            if(normal.getX()*(triTranslated.getTriangle()[0].getX()) + normal.getY()*(triTranslated.getTriangle()[0].getY()) + normal.getZ()*(triTranslated.getTriangle()[0].getZ()) < 0)
-            {
-                int nTriangoliClipping = 0;
-                Triangle[] Clipping = new Triangle[2];
+            if(BackfaceCulling.isFrontFaced(triTranslated))
+            {                              
+                //Apply the projection
+                Triangle triProjected = new Triangle(MatrixMultiplication(triTranslated.getTriangle()[0], matrixPerspective), MatrixMultiplication(triTranslated.getTriangle()[1], matrixPerspective), MatrixMultiplication(triTranslated.getTriangle()[2], matrixPerspective));
 
                 //[?]
-                //(p Da togliere)
-                Point3D p = new Point3D(0, 0 ,0);
-                Triangle t1 = new Triangle(p, p, p), t2 = new Triangle(p, p, p);
-                nTriangoliClipping = Triangle_Clipped_Plane(new Point3D(0,0,0.1), new Point3D(0, 0, 1), triTranslated, t1, t2);
-                Clipping[0] = t1;
-                Clipping[1] = t2;
-
-                //Cicle for Clipping
-                for(int n = 0; n < nTriangoliClipping; n++)
+                /*Rivedere??? (Normalizziamo?)*/
+                if(true)
                 {
-                    //Apply the projection
-                    Triangle triProjected = new Triangle(MatrixMultiplication(Clipping[n].getTriangle()[0], matrixPerspective), MatrixMultiplication(Clipping[n].getTriangle()[1], matrixPerspective), MatrixMultiplication(Clipping[n].getTriangle()[2], matrixPerspective));
-
-                    //[?]
-                    /*Rivedere??? (Normalizziamo?)*/
-                    if(true)
-                    {
-                        //Center in screen and scale, based on the screen size
-                        double centerX = 1;
-                        double centerY = 1;
-                        triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() + centerX);
-                        triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() + centerY);
-                        triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() + centerX);
-                        triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() + centerY);
-                        triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() + centerX);
-                        triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() + centerY);
-                        int w = Display.getDIMX();
-                        int h = Display.getDIMY();
-                        double b = 0.5;
-               
-                        triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() * b * w);
-                        triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() * b * h);
-                        triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() * b * w);
-                        triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() * b * h);
-                        triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() * b * w);
-                        triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() * b * h);
-                    }
-
-                    //[?]
-                    //Inizializziamo per lo z-buffer(???)         
-                    triProjected.getTriangle()[0].setZ(Clipping[n].getTriangle()[0].getZ());
-                    triProjected.getTriangle()[1].setZ(Clipping[n].getTriangle()[0].getZ());
-                    triProjected.getTriangle()[2].setZ(Clipping[n].getTriangle()[0].getZ());
-    
-                    //Add the new triangle in the space
-                    Triangle tri_temp = new Triangle(triProjected.getTriangle()[0], triProjected.getTriangle()[1], triProjected.getTriangle()[2]);
-                    tri_temp.setBrightness_char(brightness_value);
-                    copy.addTriangle(tri_temp);
+                    //Center in screen and scale, based on the screen size
+                    double centerX = 1;
+                    double centerY = 1;
+                    triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() + centerX);
+                    triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() + centerY);
+                    triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() + centerX);
+                    triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() + centerY);
+                    triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() + centerX);
+                    triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() + centerY);
+                    int w = Display.getDIMX();
+                    int h = Display.getDIMY();
+                    double b = 0.5;
+           
+                    triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() * b * w);
+                    triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() * b * h);
+                    triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() * b * w);
+                    triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() * b * h);
+                    triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() * b * w);
+                    triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() * b * h);
                 }
+
+                //[?]
+                //Inizializziamo per lo z-buffer(???)         
+                triProjected.getTriangle()[0].setZ(triTranslated.getTriangle()[0].getZ());
+                triProjected.getTriangle()[1].setZ(triTranslated.getTriangle()[1].getZ());
+                triProjected.getTriangle()[2].setZ(triTranslated.getTriangle()[2].getZ());
+
+                //Add the new triangle in the space
+                Triangle tri_temp = new Triangle(triProjected.getTriangle()[0], triProjected.getTriangle()[1], triProjected.getTriangle()[2]);
+                tri_temp.setBrightness_char(brightness_value);
+                copy.addTriangle(tri_temp);
                 
             }
         }
 
-        
-        
-        List <Triangle> triangleList = copy.getSpace();
-        //[?]
-        //Riv non fa nulla???
-        Collections.sort(triangleList, new Comparator<Triangle>() 
-        {
-            @Override
-            public int compare(Triangle t1, Triangle t2)
-            {
-                double z1 = (t1.getTriangle()[0].getZ() + t1.getTriangle()[1].getZ() + t1.getTriangle()[2].getZ()) / 3.0f;
-                double z2 = (t2.getTriangle()[0].getZ() + t2.getTriangle()[1].getZ() + t2.getTriangle()[2].getZ()) / 3.0f;
-                return Double.compare(z2, z1);
-            }
-        });
-        
-        //[???]
-        //CLIPPING PER IL FRUSTUM (CONCLUDERE)
-        /*
-        ArrayList<Triangolo> Prova = new ArrayList<>();
-        for(Triangolo Z : copia.getSpace())
-        {
-            Prova.add(Z);
-        }  
-        
-        for(Triangolo T : Prova)
-        {
-        //Proiettiamo lo space nel Monitor
-        //Clippiamo anche verso i 4 bordi dello schermo
-        Triangolo Clipped[] = new Triangolo[2];
-
-        triangleList.add(T);
-        int nNuoviTriang = 1;
-
-        for(int p = 0; p < 4; p++)
-        {
-            int nTriangDaAggiun = 0;
-            while(nNuoviTriang > 0)
-            {
-                Triangolo test = triangleList.get(0);
-                triangleList.remove(0);
-                nNuoviTriang--;
-
-                Triangolo t1 = new Triangolo(), t2 = new Triangolo();
-                switch(p)
-                {
-                    case 0:
-                        nTriangDaAggiun = Triangolo_Clippato_Piano(new Punto3D(0 , 0, 0), new Punto3D(0, 1, 0), test, t1, t2);
-                        break;
-                    case 1:
-                        nTriangDaAggiun = Triangolo_Clippato_Piano(new Punto3D(0 , (double) Display.getDIMY()- 1, 0), new Punto3D(0, -1, 0), test, t1, t2);
-                        break;
-                    case 2:
-                        nTriangDaAggiun = Triangolo_Clippato_Piano(new Punto3D(0 , 0, 0), new Punto3D(1, 0, 0), test, t1, t2);
-                        break;
-                    case 3:
-                        nTriangDaAggiun = Triangolo_Clippato_Piano(new Punto3D((double) Display.getDIMX()- 1, 0, 0), new Punto3D(-1, 0, 0), test, t1, t2);
-                        break;
-                }
-                Clipped[0] = t1;
-                Clipped[1] = t2;
-
-                for(int w = 0; w < nTriangDaAggiun; ++w)
-                {
-                    triangleList.add(Clipped[w]);
-                }
-            }
-            nNuoviTriang = triangleList.size();
-        }
-    }
-    */
-    
-        //We change the space with new triangles
-        copy.setSpace(triangleList);
         //Visualizing the point on monitor
         Draw(Monitor, monitor, copy);
     }
@@ -459,7 +347,7 @@ public class Engine
         Point3D[] External_Points = new Point3D[3];
         int nPointInt = 0, nPointExt = 0;
 
-        //Calcolulate the points-plane distances
+        //Calculate the points-plane distances
         double dist0 = distance(in_tri.getTriangle()[0], Plane_n, Plane_p);
         double dist1 = distance(in_tri.getTriangle()[1], Plane_n, Plane_p);
         double dist2 = distance(in_tri.getTriangle()[2], Plane_n, Plane_p);

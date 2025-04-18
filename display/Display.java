@@ -1,4 +1,5 @@
 package display;
+
 import geometry.Point2D;
 import geometry.Point3D;
 import geometry.Triangle;
