@@ -94,6 +94,14 @@ public class Mesh
             System.out.println((this.getMesh()).get(i));
         }
     }
+	public void print_bounding_box()
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            System.out.println(bounding_box[i]);
+        }
+		System.out.println();
+    }
 
 	//This function create the maze's walls and set them in the mesh
     public Mesh createSolid(char[][] maze, Position pos)

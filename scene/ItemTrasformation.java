@@ -50,8 +50,8 @@ public class ItemTrasformation extends Thread
             e.printStackTrace();
         }
 
-        /*
-        //AGGIORNAMENTO FRAMES TEIERA
+        
+        //TEAPOT TEST
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
@@ -67,6 +67,35 @@ public class ItemTrasformation extends Thread
             System.out.print("\033[H\033[2J");  
             System.out.flush();
             display.print();
+            try
+            {
+                Thread.sleep(20); 
+            } 
+            catch(Exception e)
+            {} 
+        }
+        
+
+        /*
+        //TEST FRUSTUM CULLING (AND CLIPPING)
+        Display display = new Display();
+        Engine newEngine = new Engine();
+        Trasformation trasformation = new Trasformation();
+        trasformation.setMovement(0, -1, 5);
+        for(int i = 0; i < 10000; i++)
+        {
+            display.reset();
+            trasformation.setThetaX(-i);
+            trasformation.setThetaY(i);
+            trasformation.setThetaZ(i);
+            trasformation.setMovement(i*1, -1, 5);
+            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
+            
+            
+            System.out.print("\033[H\033[2J");  
+            System.out.flush();
+            display.print();
+            
             try
             {
                 Thread.sleep(20); 
@@ -75,38 +104,14 @@ public class ItemTrasformation extends Thread
             {} 
         }
         */
-
-        //TEST FRUSTUM CULLING
-        Display display = new Display();
-        Engine newEngine = new Engine();
-        Trasformation trasformation = new Trasformation();
-        trasformation.setMovement(0, -1, 5);
-        for(int i = 0; i < 10000; i++)
-        {
-            display.reset();
-            trasformation.setThetaX(-i);
-            trasformation.setThetaY(i);
-            trasformation.setThetaZ(i);
-            trasformation.setMovement(i, -1, 5);
-            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
-            
-            System.out.print("\033[H\033[2J");  
-            System.out.flush();
-            display.print();
-            try
-            {
-                Thread.sleep(20); 
-            } 
-            catch(Exception e)
-            {} 
-        }
         
         
-        //AGGIORNAMENTO FRAMES SCONCIO
+        //TEST SCALABILITY AND HQ
         /*
         Display display = new Display();
         Engine newEngine = new Engine();
-        newEngine.setMovement(-25, -40, 155);
+        Trasformation trasformation = new Trasformation();
+        trasformation.setMovement(-25, -40, 155);
         for(int i = 0; i < 100; i++)
         {
             
@@ -118,10 +123,10 @@ public class ItemTrasformation extends Thread
             
              
             display.reset();
-            newEngine.setThetaX(-15);
-            newEngine.setThetaY(-5*i);
-            newEngine.setThetaZ(0);
-            newEngine.Projects(faces, display, display.getMonitor());
+            trasformation.setThetaX(-15);
+            trasformation.setThetaY(-5*i);
+            trasformation.setThetaZ(0);
+            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
             
             
             System.out.print("\033[H\033[2J");  
