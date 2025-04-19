@@ -10,6 +10,7 @@ import engine.Engine;
 import geometry.Point3D;
 import display.Display;
 import geometry.Triangle;
+import geometryprocessing.Trasformation;
 
 public class ItemTrasformation extends Thread
 {
@@ -20,9 +21,9 @@ public class ItemTrasformation extends Thread
         //Object's Path (cmd / Visual Studio Code Terminal)
         //String path = "C:\\Users\\lucch\\Desktop\\3D_Engine\\Teapot.txt";
 
-        //Creation of an ArrayList and a Space (ArrayList with Triangles) to memorize file's rows
+        //Creation of an ArrayList and a Mesh (ArrayList with Triangles) to memorize file's rows
         List<Point3D> vectors  = new ArrayList<>();
-        Space faces = new Space();
+        Mesh faces = new Mesh();
 
         //Try-Catch to open and read the file
         try (BufferedReader buffer = new BufferedReader(new FileReader(new File(path)))) 
@@ -38,7 +39,7 @@ public class ItemTrasformation extends Thread
                 {
                     vectors.add(new Point3D(Double.parseDouble(word[1]),Double.parseDouble(word[2]), Double.parseDouble(word[3])));
                 }
-                else if (word[0].equals("f")) //Add the triangles to the space to project
+                else if (word[0].equals("f")) //Add the triangles to the Mesh to project
                 {
                     faces.addTriangle(new Triangle(vectors.get(Integer.parseInt(word[1]) - 1),vectors.get(Integer.parseInt(word[2]) - 1),vectors.get(Integer.parseInt(word[3]) - 1)));
                 }                
@@ -49,18 +50,19 @@ public class ItemTrasformation extends Thread
             e.printStackTrace();
         }
 
-        
+        /*
         //AGGIORNAMENTO FRAMES TEIERA
         Display display = new Display();
         Engine newEngine = new Engine();
-        newEngine.setMovement(0, -1, 5);
+        Trasformation trasformation = new Trasformation();
+        trasformation.setMovement(0, -1, 5);
         for(int i = 0; i < 10000; i++)
         {
             display.reset();
-            newEngine.setThetaX(-i);
-            newEngine.setThetaY(i);
-            newEngine.setThetaZ(i);
-            newEngine.Projects(faces, display, display.getMonitor());
+            trasformation.setThetaX(-i);
+            trasformation.setThetaY(i);
+            trasformation.setThetaZ(i);
+            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
@@ -72,25 +74,49 @@ public class ItemTrasformation extends Thread
             catch(Exception e)
             {} 
         }
-    
-        
-        //AGGIORNAMENTO FRAMES SCONCIO
-        /* 
+        */
+
+        //TEST FRUSTUM CULLING
         Display display = new Display();
         Engine newEngine = new Engine();
-        newEngine.distance = 155;
-        newEngine.moveY = -25;
-        newEngine.moveX = -40;
+        Trasformation trasformation = new Trasformation();
+        trasformation.setMovement(0, -1, 5);
+        for(int i = 0; i < 10000; i++)
+        {
+            display.reset();
+            trasformation.setThetaX(-i);
+            trasformation.setThetaY(i);
+            trasformation.setThetaZ(i);
+            trasformation.setMovement(i, -1, 5);
+            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
+            
+            System.out.print("\033[H\033[2J");  
+            System.out.flush();
+            display.print();
+            try
+            {
+                Thread.sleep(20); 
+            } 
+            catch(Exception e)
+            {} 
+        }
+        
+        
+        //AGGIORNAMENTO FRAMES SCONCIO
+        /*
+        Display display = new Display();
+        Engine newEngine = new Engine();
+        newEngine.setMovement(-25, -40, 155);
         for(int i = 0; i < 100; i++)
         {
-            /*
-            display.reset();
-            newEngine.setThetaX(-30);
-            newEngine.setThetaY(225);
-            newEngine.setThetaZ(0);
-            newEngine.Projects(faces, display, display.getMonitor());
             
+            // display.reset();
+            // newEngine.setThetaX(-30);
+            // newEngine.setThetaY(225);
+            // newEngine.setThetaZ(0);
+            // newEngine.Projects(faces, display, display.getMonitor());
             
+             
             display.reset();
             newEngine.setThetaX(-15);
             newEngine.setThetaY(-5*i);
@@ -110,7 +136,8 @@ public class ItemTrasformation extends Thread
 
             }
         }
-            */
+        */
+        
         
     }
 }

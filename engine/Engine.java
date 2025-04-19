@@ -3,41 +3,23 @@ package engine;
 import display.Display;
 import geometry.Point3D;
 import geometry.Triangle;
-import scene.Space;
+import scene.Mesh;
 import application.BackfaceCulling;
+import application.FrustumCulling;
+import geometryprocessing.Trasformation;
 
 public class Engine 
 {
-    //[?]
-    //Angles to rotate the mesh
-    private double fThetaX = Math.toRadians(0);
-    private double fThetaY = Math.toRadians(0);
-    private double fThetaZ = Math.toRadians(0);
-
-    //Values for mesh translation
-    //negative = move to the left, positive = move to right
-    double moveX = 0;
-    //negative = move down, positive = move up
-    double moveY = 0;
-    //negative = behind the viewer, positive = in front of the viewer
-    double distance = 0;
 
     private double[][] matrixPerspective = new double[4][4];
-    private double[][] matrixRotX = new double[4][4];
-    private double[][] matrixRotY = new double[4][4];
-    private double[][] matrixRotZ = new double[4][4];
 
     public Engine()
     {
-        //Resetting all the matrices
         for(int i = 0; i < 4; i++)
         {
             for(int j = 0; j < 4; j++)
             {
                 matrixPerspective[i][j] = 0;
-                matrixRotX[i][j] = 0;
-                matrixRotY[i][j] = 0;
-                matrixRotZ[i][j] = 0;
             }
         }
 
@@ -55,19 +37,14 @@ public class Engine
         matrixPerspective[3][3] = 0;
 
         //[?] non lo facciamo pure dopo?
-        this.setMatrixRot();
+        /////////////////this.setMatrixRot();
         
     }
 
-    public void setMovement(double moveX, double moveY, double distance)
-    {
-        this.moveX = moveX;
-        this.moveY = moveY;
-        this.distance = distance;
-    }
+    
 
-    //Calculate the position of new points in the space after the projection
-    public void Projects(Space space, Display Monitor, char monitor[][])
+    //Calculate the position of new points in the mesh after the projection
+    public void Projects(Mesh mesh, Display Monitor, char monitor[][], Trasformation trasf)
     {
         Point3D normal, light;
         
@@ -81,60 +58,25 @@ public class Engine
         light.setZ(light.getZ()/lum);
 
         //[?]
-        //We can work on a copy of the space from input, so we can do not modify the space itself
-        Space copy = new Space();
+        //We can work on a copy of the mesh from input, so we can do not modify the mesh itself
+        Mesh meshGeometry = new Mesh();
+        Mesh meshBackface = new Mesh(); 
+        Mesh finalMesh = new Mesh(); 
         
-        //[?]
-        //Set all the rotation matrices
-        this.setMatrixRot();
-
-
-        for(int l = 0; l < (space.getSpace()).size(); l++)
+        meshGeometry = trasf.meshTransformation(mesh);
+        meshBackface = BackfaceCulling.backface_culling(meshGeometry);
+        meshBackface.setBoundingBox();
+        if(!(FrustumCulling.isInFrustum(meshBackface.getBoundingBox())))
         {
-            //We extract all the tringles in the space
-            Triangle tri = (space.getSpace()).get(l);
-            Triangle triRotated = new Triangle();
+            System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK?");
+        }
 
-            //[?]
-            //Un'eventuale scale va applicato prima della rotazione!
-
-            //We can now apply the rotation to individual points
-            triRotated.setTriangle(MatrixMultiplication2(tri.getTriangle()[0], matrixRotX), MatrixMultiplication2(tri.getTriangle()[1], matrixRotX), MatrixMultiplication2(tri.getTriangle()[2], matrixRotX));
-            triRotated.setTriangle(MatrixMultiplication2(triRotated.getTriangle()[0], matrixRotY), MatrixMultiplication2(triRotated.getTriangle()[1], matrixRotY), MatrixMultiplication2(triRotated.getTriangle()[2], matrixRotY));
-            triRotated.setTriangle(MatrixMultiplication2(triRotated.getTriangle()[0], matrixRotZ), MatrixMultiplication2(triRotated.getTriangle()[1], matrixRotZ), MatrixMultiplication2(triRotated.getTriangle()[2], matrixRotZ));
-
-            Triangle triTranslated = new Triangle(triRotated.getTriangle()[0], triRotated.getTriangle()[1], triRotated.getTriangle()[2]);
-            //[??S]
-            //Trasliamo il Triangolo (riv se necessaria la copia)
-            //??controlliamo se la condizione nell'if è necessaria/da cambiare
-            if(triTranslated.getTriangle()[0].getZ()+distance > 0)
-            {  
-                triTranslated.getTriangle()[0].setZ(triTranslated.getTriangle()[0].getZ() + distance);
-                triTranslated.getTriangle()[0].setX(triTranslated.getTriangle()[0].getX() - moveX);
-                triTranslated.getTriangle()[0].setY(triTranslated.getTriangle()[0].getY() + moveY);
-            }
-            if(triTranslated.getTriangle()[1].getZ()+distance > 0)
+        for(Triangle tri : meshBackface.getMesh())
+        {
+            if(true)
             {
-                triTranslated.getTriangle()[1].setZ(triTranslated.getTriangle()[1].getZ() + distance);
-                triTranslated.getTriangle()[1].setX(triTranslated.getTriangle()[1].getX() - moveX);
-                triTranslated.getTriangle()[1].setY(triTranslated.getTriangle()[1].getY() + moveY);
-            }
-            if(triTranslated.getTriangle()[2].getZ()+distance > 0)
-            {
-                triTranslated.getTriangle()[2].setZ(triTranslated.getTriangle()[2].getZ() + distance);
-                triTranslated.getTriangle()[2].setX(triTranslated.getTriangle()[2].getX() - moveX);
-                triTranslated.getTriangle()[2].setY(triTranslated.getTriangle()[2].getY() + moveY);
-            }
-
-            normal = triTranslated.normal();
-    
-            //To obtain the brightness value we should apply the dot product between the light vector and the triangle's normal vector 
-            double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ();
-
-            if(BackfaceCulling.isFrontFaced(triTranslated))
-            {                              
                 //Apply the projection
-                Triangle triProjected = new Triangle(MatrixMultiplication(triTranslated.getTriangle()[0], matrixPerspective), MatrixMultiplication(triTranslated.getTriangle()[1], matrixPerspective), MatrixMultiplication(triTranslated.getTriangle()[2], matrixPerspective));
+                Triangle triProjected = new Triangle(MatrixMultiplication(tri.getTriangle()[0], matrixPerspective), MatrixMultiplication(tri.getTriangle()[1], matrixPerspective), MatrixMultiplication(tri.getTriangle()[2], matrixPerspective));
 
                 //[?]
                 /*Rivedere??? (Normalizziamo?)*/
@@ -163,20 +105,32 @@ public class Engine
 
                 //[?]
                 //Inizializziamo per lo z-buffer(???)         
-                triProjected.getTriangle()[0].setZ(triTranslated.getTriangle()[0].getZ());
-                triProjected.getTriangle()[1].setZ(triTranslated.getTriangle()[1].getZ());
-                triProjected.getTriangle()[2].setZ(triTranslated.getTriangle()[2].getZ());
+                triProjected.getTriangle()[0].setZ(tri.getTriangle()[0].getZ());
+                triProjected.getTriangle()[1].setZ(tri.getTriangle()[1].getZ());
+                triProjected.getTriangle()[2].setZ(tri.getTriangle()[2].getZ());
 
-                //Add the new triangle in the space
+                //Add the new triangle in the mesh
                 Triangle tri_temp = new Triangle(triProjected.getTriangle()[0], triProjected.getTriangle()[1], triProjected.getTriangle()[2]);
+                
+                normal = tri.normal();
+                //To obtain the brightness value we should apply the dot product between the light vector and the triangle's normal vector 
+                double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ(); 
                 tri_temp.setBrightness_char(brightness_value);
-                copy.addTriangle(tri_temp);
+                finalMesh.addTriangle(tri_temp);
                 
             }
         }
 
+        /*
+        System.out.println("Starting Triangles: " + mesh.getMesh().size());
+        System.out.println("Triangles after trasformation: " + meshGeometry.getMesh().size());
+        System.out.println("Triangles after Backface Culling: " + meshBackface.getMesh().size());
+        System.out.println("Triangles after Frustum Culling: " + meshFrustum.getMesh().size())
+        System.out.println("Triangles at the end: " + finalMesh.getMesh().size());
+        */
+
         //Visualizing the point on monitor
-        Draw(Monitor, monitor, copy);
+        Draw(Monitor, monitor, finalMesh);
     }
 
     //To calculate mtrix multiplications
@@ -197,17 +151,9 @@ public class Engine
 
         return o;
     }
-    public Point3D MatrixMultiplication2(Point3D i, double[][] m)
-    {
-        Point3D o = new Point3D();
-        o.setX(((i.getX())*(m[0][0]) + (i.getY())*(m[0][1]) + (i.getZ())*(m[0][2])));
-        o.setY(((i.getX())*(m[1][0]) + (i.getY())*(m[1][1]) + (i.getZ())*(m[1][2])));
-        o.setZ(((i.getX())*(m[2][0]) + (i.getY())*(m[2][1]) + (i.getZ())*(m[2][2])));
-        
-        return o;
-    }
+    
 
-    public char[][] Draw(Display Monitor, char[][] schermo, Space space)
+    public char[][] Draw(Display Monitor, char[][] schermo, Mesh mesh)
     {
         //[?]
         //Z-buffer (da Sistemare???)
@@ -222,9 +168,9 @@ public class Engine
             }
         }
 
-        for(int l = 0; l < (space.getSpace()).size(); l++)
+        for(int l = 0; l < (mesh.getMesh()).size(); l++)
         {
-            Triangle triTranslated = (space.getSpace()).get(l);
+            Triangle triTranslated = (mesh.getMesh()).get(l);
             //[?]
             //We have to verify that triangle's vertices are inside the display, and their value should be the smallest in the Z-buffer (Riv?)
             if((int)Math.ceil(triTranslated.getTriangle()[0].getX()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[0].getX()) < Display.getDIMX() && (int)Math.ceil(triTranslated.getTriangle()[0].getY()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[0].getY()) < Display.getDIMY() && triTranslated.getTriangle()[0].getZ() < Buffer[(int)Math.ceil(triTranslated.getTriangle()[0].getY())][(int)Math.ceil(triTranslated.getTriangle()[0].getX())])
@@ -248,192 +194,7 @@ public class Engine
             Monitor.Rasterization(triTranslated, Buffer);
         }
         
-        /*
-        for(int i = 0; i < Monitor.DIMY; i++)
-        {
-            for(int j = 0; j < Monitor.DIMX; j++)
-            {
-                System.out.print((int) Buffer[i][j]);
-            }
-            System.out.println();
-        }
-        */
-        
         return Monitor.Monitor;
-    }
-
-    //Setter and getter methods for rotations
-    public void setThetaX(double fThetaX)
-    {
-        this.fThetaX = Math.toRadians(fThetaX);
-        this.setMatrixRot();
-    }
-    public void setThetaY(double fThetaY)
-    {
-        this.fThetaY = Math.toRadians(fThetaY);
-        this.setMatrixRot();
-    }
-    public void setThetaZ(double fThetaZ)
-    {
-        this.fThetaZ = Math.toRadians(fThetaZ);
-        this.setMatrixRot();
-    }
-
-    public double getThetaX()
-    {
-        return this.fThetaX;
-    }
-    public double getThetaY()
-    {
-        return this.fThetaY;
-    }
-    public double getThetaZ()
-    {
-        return this.fThetaZ;
-    }
-
-    //To set rotation matrices
-    public void setMatrixRot()
-    {
-        this.matrixRotX[0][0] =  1;
-        this.matrixRotX[1][1] =  Math.cos(this.fThetaX);
-        this.matrixRotX[1][2] = -Math.sin(this.fThetaX);
-        this.matrixRotX[2][1] =  Math.sin(this.fThetaX); 
-        this.matrixRotX[2][2] =  Math.cos(this.fThetaX);
-        this.matrixRotX[3][3] =  1;
-
-        this.matrixRotY[0][0] =  Math.cos(this.fThetaY);
-        this.matrixRotY[0][2] =  Math.sin(this.fThetaY);
-        this.matrixRotY[1][1] =  1;
-        this.matrixRotY[2][0] = -Math.sin(this.fThetaY);
-        this.matrixRotY[2][2] =  Math.cos(this.fThetaY);
-        this.matrixRotY[3][3] =  1;
-
-        this.matrixRotZ[0][0] =  Math.cos(this.fThetaZ);
-        this.matrixRotZ[0][1] = -Math.sin(this.fThetaZ);
-        this.matrixRotZ[1][0] =  Math.sin(this.fThetaZ);
-        this.matrixRotZ[1][1] =  Math.cos(this.fThetaZ);
-        this.matrixRotZ[2][2] =  1;
-        this.matrixRotZ[3][3] =  1;
-    }
-
-    //[???]
-    public Point3D Vector_IntersectsPlane(Point3D Plane_p, Point3D Plane_n, Point3D lineStart, Point3D lineEnd)
-    {
-        double Norm_n = Math.sqrt(Plane_n.getX()*Plane_n.getX() + Plane_n.getY()*Plane_n.getY() + Plane_n.getZ()*Plane_n.getZ());
-        Plane_n.setX(Plane_n.getX()/Norm_n);
-        Plane_n.setY(Plane_n.getY()/Norm_n);
-        Plane_n.setZ(Plane_n.getZ()/Norm_n);
-        double Plane_d = -(Plane_n.getX()*Plane_p.getX() + Plane_n.getY()*Plane_p.getY() + Plane_n.getZ()*Plane_p.getZ());
-        double ad = lineStart.getX()*Plane_n.getX() + lineStart.getY()*Plane_n.getY() + lineStart.getZ()*Plane_n.getZ();
-        double bd = lineEnd.getX()*Plane_n.getX() + lineEnd.getY()*Plane_n.getY() + lineEnd.getZ()*Plane_n.getZ();
-        double t = (-Plane_d - ad) / (bd-ad);
-        Point3D lineStartEnd = new Point3D(lineEnd.getX() - lineStart.getX(), lineEnd.getY() - lineStart.getY(), lineEnd.getZ() - lineStart.getZ());
-        Point3D lineToIntersect = new Point3D(t*lineStartEnd.getX(), t*lineStartEnd.getY(), t*lineStartEnd.getZ());
-
-        return new Point3D(lineStart.getX() + lineToIntersect.getX(), lineStart.getY() + lineToIntersect.getY(), lineStart.getZ() + lineToIntersect.getZ());
-    }
-
-    //[???]
-    public int Triangle_Clipped_Plane(Point3D Plane_p, Point3D Plane_n, Triangle in_tri, Triangle out_tri1, Triangle out_tri2)
-    {
-        //Normalize the plane's normal
-        double Norm_n = Math.sqrt(Plane_n.getX()*Plane_n.getX() + Plane_n.getY()*Plane_n.getY() + Plane_n.getZ()*Plane_n.getZ());
-        Plane_n.setX(Plane_n.getX()/Norm_n);
-        Plane_n.setY(Plane_n.getY()/Norm_n);
-        Plane_n.setZ(Plane_n.getZ()/Norm_n);
-
-        Point3D[] Internal_Points = new Point3D[3];
-        Point3D[] External_Points = new Point3D[3];
-        int nPointInt = 0, nPointExt = 0;
-
-        //Calculate the points-plane distances
-        double dist0 = distance(in_tri.getTriangle()[0], Plane_n, Plane_p);
-        double dist1 = distance(in_tri.getTriangle()[1], Plane_n, Plane_p);
-        double dist2 = distance(in_tri.getTriangle()[2], Plane_n, Plane_p);
-
-        if(dist0 >= 0)
-        {
-            Internal_Points[nPointInt] = in_tri.getTriangle()[0];
-            nPointInt++;
-        }
-        else
-        {
-            External_Points[nPointExt] = in_tri.getTriangle()[0];
-            nPointExt++;
-        }
-        if(dist1 >= 0)
-        {
-            Internal_Points[nPointInt] = in_tri.getTriangle()[1];
-            nPointInt++;
-        }
-        else
-        {
-            External_Points[nPointExt] = in_tri.getTriangle()[1];
-            nPointExt++;
-        }
-        if(dist2 >= 0)
-        {
-            Internal_Points[nPointInt] = in_tri.getTriangle()[2];
-            nPointInt++;
-        }
-        else
-        {
-            External_Points[nPointExt] = in_tri.getTriangle()[2];
-            nPointExt++;
-        }
-
-
-        if(nPointInt == 0)
-        {
-            return 0;
-        }
-        if(nPointInt == 3)
-        {
-            out_tri1.setTriangle(in_tri.getTriangle()[0], in_tri.getTriangle()[1], in_tri.getTriangle()[2]);          
-            return 1;
-        }
-        if (nPointInt == 1 && nPointExt == 2) 
-        {
-            Point3D p0 = new Point3D(Internal_Points[0].getX(), Internal_Points[0].getY(), Internal_Points[0].getZ());
-            Point3D p1 = Vector_IntersectsPlane(Plane_p, Plane_n, Internal_Points[0], External_Points[0]); 
-            Point3D p2 = Vector_IntersectsPlane(Plane_p, Plane_n, Internal_Points[0], External_Points[1]);  
-            out_tri1.setTriangle(p0, p1, p2);
-            return 1;
-        }
-        if(nPointInt == 2 && nPointExt == 1)
-        {
-            Point3D p0 = new Point3D(Internal_Points[0].getX(), Internal_Points[0].getY(), Internal_Points[0].getZ());
-            Point3D p1 = new Point3D(Internal_Points[1].getX(), Internal_Points[1].getY(), Internal_Points[1].getZ());
-            Point3D p2 = Vector_IntersectsPlane(Plane_p, Plane_n, Internal_Points[0], External_Points[0]);         
-            out_tri1.setTriangle(p0, p1, p2);
-
-            out_tri1.getTriangle()[1].setX(p1.getX());
-            out_tri1.getTriangle()[1].setY(p1.getY());
-            out_tri1.getTriangle()[1].setZ(p1.getZ());
-
-            out_tri2.getTriangle()[0].setX(Internal_Points[1].getX());
-            out_tri2.getTriangle()[0].setY(Internal_Points[1].getY());
-            out_tri2.getTriangle()[0].setZ(Internal_Points[1].getZ());
-            
-            out_tri2.getTriangle()[0].setX(out_tri1.getTriangle()[2].getX());
-            out_tri2.getTriangle()[0].setY(out_tri1.getTriangle()[2].getY());
-            out_tri2.getTriangle()[0].setZ(out_tri1.getTriangle()[2].getZ());
-            p0 = p1;
-            p1 = out_tri1.getTriangle()[2];
-            p2 = Vector_IntersectsPlane(Plane_p, Plane_n, Internal_Points[1], External_Points[0]);  
-            out_tri2.setTriangle(p0, p1, p2);
-            return 2;
-        }
-
-        return 0;
-    }
-
-    //[???]
-    public double distance(Point3D p, Point3D Plane_n, Point3D Plane_p)
-    {
-    ///////////////////////////?????normalizza
-    return (Plane_n.getX()*p.getX() + Plane_n.getY()*p.getY() + Plane_n.getZ()*p.getZ() - (Plane_n.getX()*Plane_p.getX() + Plane_n.getY()*Plane_p.getY() + Plane_n.getZ()*Plane_p.getZ()));
     }
 }
 

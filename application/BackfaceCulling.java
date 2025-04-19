@@ -1,25 +1,23 @@
 package application;
 
 import geometry.Point3D;
-import scene.Space;
+import scene.Mesh;
 import geometry.Triangle;
 
 public class BackfaceCulling 
 {
-    public static Space backface_culling (Space triangles)
+    public static Mesh backface_culling (Mesh triangles)
     {
-        System.out.println("triangles: " + triangles.getSpace().size());
-        Space result = new Space();
+        Mesh result = new Mesh();
 
-        for(int i = 0; i < triangles.getSpace().size(); i++)
+        for(int i = 0; i < triangles.getMesh().size(); i++)
         {
-            Triangle tri = triangles.getSpace().get(i);
+            Triangle tri = triangles.getMesh().get(i);
             if(isFrontFaced(tri))
             {
                 result.addTriangle(tri);
             }
         }
-        System.out.println("result " + result.getSpace().size());
         return result;
     }
 
