@@ -7,12 +7,14 @@ import scene.Mesh;
 import application.BackfaceCulling;
 import application.FrustumCulling;
 import geometryprocessing.Trasformation;
+import geometryprocessing.VertexShader;
 
 public class Engine 
 {
 
     private double[][] matrixPerspective = new double[4][4];
 
+    //[!] Move all in Projection.java
     public Engine()
     {
         for(int i = 0; i < 4; i++)
@@ -34,11 +36,7 @@ public class Engine
         matrixPerspective[2][2] = (-fFar * fNear) / (fFar - fNear);
         matrixPerspective[2][3] = -(2*fFar * fNear) / (fFar - fNear);
         matrixPerspective[3][2] = -1.0;
-        matrixPerspective[3][3] = 0;
-
-        //[?] non lo facciamo pure dopo?
-        /////////////////this.setMatrixRot();
-        
+        matrixPerspective[3][3] = 0;        
     }
 
     
@@ -46,17 +44,6 @@ public class Engine
     //Calculate the position of new points in the mesh after the projection
     public void Projects(Mesh mesh, Display Monitor, char monitor[][], Trasformation trasf)
     {
-        Point3D normal, light;
-        
-        //[?]
-        //Gestiamo la direzione della luce (Sistemare?)
-        light = new Point3D(0, 0, -1);
-        //Normalize the lighting vector
-        double lum = Math.sqrt(light.getX()*light.getX() + light.getY()*light.getY() + light.getZ()*light.getZ());
-        light.setX(light.getX()/lum);
-        light.setY(light.getY()/lum);
-        light.setZ(light.getZ()/lum);
-
         //[?]
         //We can work on a copy of the mesh from input, so we can do not modify the mesh itself
         Mesh meshGeometry = new Mesh();
@@ -70,52 +57,48 @@ public class Engine
             meshBackface = BackfaceCulling.backface_culling(meshGeometry);
             for(Triangle tri : meshBackface.getMesh())
             {
+                //We calculate the brightness value of the triangle
+                double brightness_value = VertexShader.computeBrightness(tri);
+
+                //Apply the projection
+                Triangle triProjected = new Triangle(MatrixMultiplication(tri.getTriangle()[0], matrixPerspective), MatrixMultiplication(tri.getTriangle()[1], matrixPerspective), MatrixMultiplication(tri.getTriangle()[2], matrixPerspective));
+
+                //[?]
+                /*Rivedere??? (Normalizziamo?)*/
                 if(true)
                 {
-                    //Apply the projection
-                    Triangle triProjected = new Triangle(MatrixMultiplication(tri.getTriangle()[0], matrixPerspective), MatrixMultiplication(tri.getTriangle()[1], matrixPerspective), MatrixMultiplication(tri.getTriangle()[2], matrixPerspective));
-
-                    //[?]
-                    /*Rivedere??? (Normalizziamo?)*/
-                    if(true)
-                    {
-                        //Center in screen and scale, based on the screen size
-                        double centerX = 1;
-                        double centerY = 1;
-                        triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() + centerX);
-                        triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() + centerY);
-                        triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() + centerX);
-                        triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() + centerY);
-                        triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() + centerX);
-                        triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() + centerY);
-                        int w = Display.getDIMX();
-                        int h = Display.getDIMY();
-                        double b = 0.5;
+                    //Center in screen and scale, based on the screen size
+                    double centerX = 1;
+                    double centerY = 1;
+                    triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() + centerX);
+                    triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() + centerY);
+                    triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() + centerX);
+                    triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() + centerY);
+                    triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() + centerX);
+                    triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() + centerY);
+                    int w = Display.getDIMX();
+                    int h = Display.getDIMY();
+                    double b = 0.5;
             
-                        triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() * b * w);
-                        triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() * b * h);
-                        triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() * b * w);
-                        triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() * b * h);
-                        triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() * b * w);
-                        triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() * b * h);
-                    }
-
-                    //[?]
-                    //Inizializziamo per lo z-buffer(???)         
-                    triProjected.getTriangle()[0].setZ(tri.getTriangle()[0].getZ());
-                    triProjected.getTriangle()[1].setZ(tri.getTriangle()[1].getZ());
-                    triProjected.getTriangle()[2].setZ(tri.getTriangle()[2].getZ());
-
-                    //Add the new triangle in the mesh
-                    Triangle tri_temp = new Triangle(triProjected.getTriangle()[0], triProjected.getTriangle()[1], triProjected.getTriangle()[2]);
-                    
-                    normal = tri.normal();
-                    //To obtain the brightness value we should apply the dot product between the light vector and the triangle's normal vector 
-                    double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ(); 
-                    tri_temp.setBrightness_char(brightness_value);
-                    finalMesh.addTriangle(tri_temp);
-                    
+                    triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() * b * w);
+                    triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() * b * h);
+                    triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() * b * w);
+                    triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() * b * h);
+                    triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() * b * w);
+                    triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() * b * h);
                 }
+
+                //[?]
+                //Inizializziamo per lo z-buffer(???)         
+                triProjected.getTriangle()[0].setZ(tri.getTriangle()[0].getZ());
+                triProjected.getTriangle()[1].setZ(tri.getTriangle()[1].getZ());
+                triProjected.getTriangle()[2].setZ(tri.getTriangle()[2].getZ());
+
+                //Add the projected triangle in the mesh and set its previously calculated brightness
+                Triangle tri_temp = new Triangle(triProjected.getTriangle()[0], triProjected.getTriangle()[1], triProjected.getTriangle()[2]);
+                tri_temp.setBrightness_char(brightness_value);
+                finalMesh.addTriangle(tri_temp);
+                    
             }
         }
 
