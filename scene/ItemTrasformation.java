@@ -62,7 +62,7 @@ public class ItemTrasformation extends Thread
             trasformation.setThetaX(-i);
             trasformation.setThetaY(i);
             trasformation.setThetaZ(i);
-            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
+            newEngine.Rendering(faces, display, display.getMonitor(), trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
