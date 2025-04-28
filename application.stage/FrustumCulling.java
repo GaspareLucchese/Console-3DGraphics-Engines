@@ -1,4 +1,4 @@
-package application;
+package application.stage;
 
 import display.Display;
 import geometry.Point3D;

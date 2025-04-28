@@ -1,4 +1,4 @@
-package geometryprocessing;
+package geometry.processing;
 
 import display.Display;
 import geometry.Point3D;
@@ -23,7 +23,7 @@ public class Projection
         double fNear = 0.01;
         double fFar = 1000.0;
         double fFov = Math.toRadians(90.0);
-        double fAspectRatio = (double)(Display.getDIMX()/Display.getDIMY());
+        double fAspectRatio = (double)Display.getDIMX() / (double)Display.getDIMY();
         double fFovRad = 1.0/ Math.tan(fFov / 2);
         matrixPerspective[0][0] = 1/(fAspectRatio * fFovRad);
         matrixPerspective[1][1] = 1/(fFovRad);

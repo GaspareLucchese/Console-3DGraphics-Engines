@@ -1,4 +1,4 @@
-package geometryprocessing;
+package geometry.processing;
 
 import geometry.Point3D;
 import geometry.Triangle;
@@ -9,7 +9,7 @@ public class FlatShader
     //[?]
     //Gestiamo la direzione della luce (Sistemare?), e se static non può essere variata!
     private static final Point3D light = new Point3D(0, 0, -1);
-    static 
+    static
     {
         //Normalize the lighting vector
         double lum = Math.sqrt(light.getX()*light.getX() + light.getY()*light.getY() + light.getZ()*light.getZ());

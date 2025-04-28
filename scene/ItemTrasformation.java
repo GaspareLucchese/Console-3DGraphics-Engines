@@ -1,4 +1,5 @@
 package scene;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -6,11 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import engine.Engine;
+import rendering.engine.Engine;
 import geometry.Point3D;
 import display.Display;
 import geometry.Triangle;
-import geometryprocessing.Trasformation;
+import geometry.processing.Trasformation;
 
 public class ItemTrasformation extends Thread
 {
@@ -52,6 +53,7 @@ public class ItemTrasformation extends Thread
 
         
         //TEAPOT TEST
+        /*
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
@@ -74,9 +76,12 @@ public class ItemTrasformation extends Thread
             catch(Exception e)
             {} 
         }
+        */
+
+        
         
 
-        /*
+        
         //TEST FRUSTUM CULLING (AND CLIPPING)
         Display display = new Display();
         Engine newEngine = new Engine();
@@ -88,9 +93,8 @@ public class ItemTrasformation extends Thread
             trasformation.setThetaX(-i);
             trasformation.setThetaY(i);
             trasformation.setThetaZ(i);
-            trasformation.setMovement(i*1, -1, 5);
-            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
-            
+            trasformation.setMovement(i*0.01, -1, 5);
+            newEngine.Rendering(faces, display, display.getMonitor(), trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
@@ -103,7 +107,8 @@ public class ItemTrasformation extends Thread
             catch(Exception e)
             {} 
         }
-        */
+        
+        
         
         
         //TEST SCALABILITY AND HQ
@@ -126,8 +131,7 @@ public class ItemTrasformation extends Thread
             trasformation.setThetaX(-15);
             trasformation.setThetaY(-5*i);
             trasformation.setThetaZ(0);
-            newEngine.Projects(faces, display, display.getMonitor(), trasformation);
-            
+            newEngine.Rendering(faces, display, display.getMonitor(), trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
@@ -142,7 +146,5 @@ public class ItemTrasformation extends Thread
             }
         }
         */
-        
-        
     }
 }

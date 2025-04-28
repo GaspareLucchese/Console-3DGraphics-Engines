@@ -1,4 +1,4 @@
-package geometryprocessing;
+package geometry.processing;
 
 import geometry.Point3D;
 import geometry.Triangle;

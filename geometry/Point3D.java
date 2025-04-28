@@ -1,4 +1,5 @@
 package geometry;
+
 public class Point3D extends Point2D
 {
     //We extend the two dimensional point
@@ -38,6 +39,18 @@ public class Point3D extends Point2D
     public Point3D normalized() {
         double length = Math.sqrt(this.getX() * this.getX() + this.getY() * this.getY() + this.getZ() * this.getZ());
         return new Point3D( this.getX()/ length, this.getY() / length, this.getZ() / length);
+    }
+
+    public Point3D subtract(Point3D other) {
+        return new Point3D(this.getX() - other.getX(), this.getY() - other.getY(), this.getZ() - other.getZ());
+    }
+
+    public Point3D add(Point3D other) {
+        return new Point3D(this.getX() + other.getX(), this.getY() + other.getY(), this.getZ() + other.getZ());
+    }
+
+    public Point3D multiply(double scalar) {
+        return new Point3D(this.getX() * scalar, this.getY() * scalar, this.getZ() * scalar);
     }
     
 }
