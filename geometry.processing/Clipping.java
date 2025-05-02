@@ -99,4 +99,3 @@ public class Clipping {
         return p1.add(p2.subtract(p1).multiply(t));
     }
 }
-

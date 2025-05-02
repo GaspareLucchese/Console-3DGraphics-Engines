@@ -11,6 +11,7 @@ import geometry.processing.Trasformation;
 import geometry.processing.Clipping;
 import geometry.processing.FlatShader;
 import geometry.processing.Projection;
+import geometry.processing.ScreenMapping;
 
 public class Engine 
 {
@@ -34,7 +35,8 @@ public class Engine
             meshBackface = BackfaceCulling.backface_culling(meshGeometry);
             for(Triangle tri : meshBackface.getMesh())
             {
-                List<Triangle> clipped = Clipping.clipTriangleAgainstFrustum(tri, planes);
+                List<Triangle> clipped = 
+                Clipping.clipTriangleAgainstFrustum(tri, planes);
                                 
                 for (Triangle cTri : clipped)
                 {
@@ -45,43 +47,17 @@ public class Engine
                     Triangle triProjected = Proj.Projects(cTri);
 
                     //[?]
-                    /*Rivedere??? (Normalizziamo?)*/
-                    if(true)
-                    {
-                        //Center in screen and scale, based on the screen size
-                        double centerX = 1;
-                        double centerY = 1;
-                        triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() + centerX);
-                        triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() + centerY);
-                        triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() + centerX);
-                        triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() + centerY);
-                        triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() + centerX);
-                        triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() + centerY);
-                        int w = Display.getDIMX();
-                        int h = Display.getDIMY();
-                        double b = 0.5;
-                
-                        triProjected.getTriangle()[0].setX(triProjected.getTriangle()[0].getX() * b * w);
-                        triProjected.getTriangle()[0].setY(triProjected.getTriangle()[0].getY() * b * h);
-                        triProjected.getTriangle()[1].setX(triProjected.getTriangle()[1].getX() * b * w);
-                        triProjected.getTriangle()[1].setY(triProjected.getTriangle()[1].getY() * b * h);
-                        triProjected.getTriangle()[2].setX(triProjected.getTriangle()[2].getX() * b * w);
-                        triProjected.getTriangle()[2].setY(triProjected.getTriangle()[2].getY() * b * h);
-                    }
-
-                    //[?]
                     //Inizializziamo per lo z-buffer(???)         
                     triProjected.getTriangle()[0].setZ(cTri.getTriangle()[0].getZ());
                     triProjected.getTriangle()[1].setZ(cTri.getTriangle()[1].getZ());
                     triProjected.getTriangle()[2].setZ(cTri.getTriangle()[2].getZ());
+                    
 
                     //Add the projected triangle in the mesh and set its previously calculated brightness
-                    Triangle tri_temp = new Triangle(triProjected.getTriangle()[0], triProjected.getTriangle()[1], triProjected.getTriangle()[2]);
+                    Triangle tri_temp = ScreenMapping.mapping_the_screen(triProjected);
                     tri_temp.setBrightness_char(brightness_value);
                     finalMesh.addTriangle(tri_temp);
-
-                }
-                                  
+                }                   
             }
         }
 
@@ -89,7 +65,7 @@ public class Engine
         System.out.println("Starting Triangles: " + mesh.getMesh().size());
         System.out.println("Triangles after trasformation: " + meshGeometry.getMesh().size());
         System.out.println("Triangles after Backface Culling: " + meshBackface.getMesh().size());
-        System.out.println("Triangles at the end: " + finalMesh.getMesh().size());
+        System.out.println("Triangles at the end (after clipping): " + finalMesh.getMesh().size());
         */
         
 

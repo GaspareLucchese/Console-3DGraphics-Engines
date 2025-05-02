@@ -49,7 +49,7 @@ public class Projection
         o.setZ(((i.getX())*(m[2][0]) + (i.getY())*(m[2][1]) + (i.getZ())*(m[2][2]) + m[2][3]));
         
         double w = (((i.getX())*(m[3][0]) + (i.getY())*(m[3][1]) + (i.getZ())*(m[3][2]) + m[3][3]));
-        if(w != 1.0)
+        if(w != 0.0 && w!= 1.0)
         {
             o.setX(o.getX()/w);
             o.setY(o.getY()/w);
