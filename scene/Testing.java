@@ -4,30 +4,33 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.InputStreamReader;
 
-import rendering.engine.Engine;
+import engine.Engine;
 import geometry.Point3D;
 import display.Display;
 import geometry.Triangle;
-import geometry.processing.Trasformation;
+import geometryprocessing.Trasformation;
 
-public class ItemTrasformation extends Thread
+public class Testing extends Thread
 {
     public static void main(String[] args) 
     {
-        //Object's Path (WSL)
-        String path = "/mnt/c/users/lucch/Desktop/3D_Engine/scene/Teapot.txt";
-        //Object's Path (cmd / Visual Studio Code Terminal)
-        //String path = "C:\\Users\\lucch\\Desktop\\3D_Engine\\Teapot.txt";
+        InputStream path = Testing.class.getClassLoader().getResourceAsStream("scene/Teapot.txt");
 
+        if (path == null) {
+            System.err.println("File Teapot.txt non trovato nel classpath!");
+            return;
+        }
         //Creation of an ArrayList and a Mesh (ArrayList with Triangles) to memorize file's rows
         List<Point3D> vectors  = new ArrayList<>();
         Mesh faces = new Mesh();
 
         //Try-Catch to open and read the file
-        try (BufferedReader buffer = new BufferedReader(new FileReader(new File(path)))) 
+        try (BufferedReader buffer = new BufferedReader(new FileReader("scene/Teapot.txt")))
         {
             String line;
             //We read every line of file and add them to the Arraylist...
@@ -53,7 +56,7 @@ public class ItemTrasformation extends Thread
 
         
         //TEAPOT TEST
-        /*
+        
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
@@ -76,13 +79,14 @@ public class ItemTrasformation extends Thread
             catch(Exception e)
             {} 
         }
-        */
+        
 
         
         
 
         
         //TEST FRUSTUM CULLING (AND CLIPPING)
+        /*
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
@@ -107,7 +111,7 @@ public class ItemTrasformation extends Thread
             catch(Exception e)
             {} 
         }
-        
+        */
         
         
         

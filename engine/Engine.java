@@ -1,17 +1,17 @@
-package rendering.engine;
+package engine;
 
 import java.util.List;
 
 import display.Display;
 import geometry.Triangle;
 import scene.Mesh;
-import application.stage.BackfaceCulling;
-import application.stage.FrustumCulling;
-import geometry.processing.Trasformation;
-import geometry.processing.Clipping;
-import geometry.processing.FlatShader;
-import geometry.processing.Projection;
-import geometry.processing.ScreenMapping;
+import applicationstage.BackfaceCulling;
+import applicationstage.FrustumCulling;
+import geometryprocessing.Trasformation;
+import geometryprocessing.Clipping;
+import geometryprocessing.FlatShader;
+import geometryprocessing.Projection;
+import geometryprocessing.ScreenMapping;
 
 public class Engine 
 {

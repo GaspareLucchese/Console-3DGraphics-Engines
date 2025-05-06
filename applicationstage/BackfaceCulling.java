@@ -1,4 +1,4 @@
-package application.stage;
+package applicationstage;
 
 import geometry.Point3D;
 import scene.Mesh;

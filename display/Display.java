@@ -7,8 +7,8 @@ import geometry.Triangle;
 public class Display 
 {
     //Screen size to render
-    private static final int DIMX = 300;
-    private static final int DIMY = 200;
+    private static final int DIMX = 375;
+    private static final int DIMY = 211;
 
     public char[][] Monitor = new char[DIMY][DIMX];
     public Display()
@@ -57,50 +57,8 @@ public class Display
     //Print all the the pixels on the monitor matrix
     public void print()
     {
-        //STAMPA PER CARATTERE???
-        /*
-        for(int i = 0; i < DIMY; i++)
-        {
-            boolean voidline = true;
-
-            for(int j = 0; j < DIMX; j++)
-            {
-                if(Monitor[i][j] != ' ')
-                {
-                    voidline = false;
-                }
-            }
-            if(voidline == true)
-            {
-                System.out.println();
-            }
-            else
-            {
-                for(int j = 0; j < DIMX; j++)
-                {
-                    System.out.print(Monitor[i][j]);
-                    System.out.print(Monitor[i][j]);
-                }
-                System.out.println();
-            }
-
-        }
-        */
-        
         //STAMPA PER FRAME???
-        /*
-        String out = "";
-        for(int i = 0; i < DIMY; i++)
-        {
-            for(int j = 0; j < DIMX; j++)
-            {
-               out = out.concat("" + Monitor[i][j] + Monitor[i][j]);
-            }
-            out += '\n';
-        }
-        System.out.println(out);
-        */
-
+        
         StringBuilder out = new StringBuilder();
         for(int i = 0; i < DIMY; i++)
         {
@@ -111,6 +69,7 @@ public class Display
         out.append('\n');
         }
         System.out.println(out);
+        
     }
 
 
