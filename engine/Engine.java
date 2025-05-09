@@ -12,6 +12,7 @@ import geometryprocessing.Clipping;
 import geometryprocessing.FlatShader;
 import geometryprocessing.Projection;
 import geometryprocessing.ScreenMapping;
+import rasterization.Rasterization;
 
 public class Engine 
 {
@@ -77,7 +78,7 @@ public class Engine
 
     public char[][] Draw(Display Monitor, char[][] schermo, Mesh mesh)
     {
-        //[?]
+        //[?] FORSE NON DA FARE QUI; DA ORDINARE
         //Z-buffer (da Sistemare???)
         double[][] Buffer = new double[Display.getDIMY()][Display.getDIMX()];
         for(int i = 0; i < Display.getDIMY(); i++)
@@ -90,30 +91,10 @@ public class Engine
             }
         }
 
-        for(int l = 0; l < (mesh.getMesh()).size(); l++)
+        for(Triangle triTranslated : mesh.getMesh())
         {
-            Triangle triTranslated = (mesh.getMesh()).get(l);
-            //[?]
-            //We have to verify that triangle's vertices are inside the display, and their value should be the smallest in the Z-buffer (Riv?)
-            if((int)Math.ceil(triTranslated.getTriangle()[0].getX()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[0].getX()) < Display.getDIMX() && (int)Math.ceil(triTranslated.getTriangle()[0].getY()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[0].getY()) < Display.getDIMY() && triTranslated.getTriangle()[0].getZ() < Buffer[(int)Math.ceil(triTranslated.getTriangle()[0].getY())][(int)Math.ceil(triTranslated.getTriangle()[0].getX())])
-            {
-                schermo[(int)Math.ceil(triTranslated.getTriangle()[0].getY())][(int)Math.ceil(triTranslated.getTriangle()[0].getX())] = triTranslated.getBrightness_char();
-            }
-            
-            if((int)Math.ceil(triTranslated.getTriangle()[1].getX()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[1].getX()) < Display.getDIMX() && (int)Math.ceil(triTranslated.getTriangle()[1].getY()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[1].getY()) < Display.getDIMY() && triTranslated.getTriangle()[1].getZ() < Buffer[(int)Math.ceil(triTranslated.getTriangle()[1].getY())][(int)Math.ceil(triTranslated.getTriangle()[1].getX())])
-            {
-                schermo[(int)Math.ceil(triTranslated.getTriangle()[1].getY())][(int)Math.ceil(triTranslated.getTriangle()[1].getX())] = triTranslated.getBrightness_char();
-            }
-
-            if((int)Math.ceil(triTranslated.getTriangle()[2].getX()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[2].getX()) < Display.getDIMX() && (int)Math.ceil(triTranslated.getTriangle()[2].getY()) >= 0 && (int)Math.ceil(triTranslated.getTriangle()[2].getY()) < Display.getDIMY() && triTranslated.getTriangle()[2].getZ() < Buffer[(int)Math.ceil(triTranslated.getTriangle()[2].getY())][(int)Math.ceil(triTranslated.getTriangle()[2].getX())])
-            {
-                schermo[(int)Math.ceil(triTranslated.getTriangle()[2].getY())][(int)Math.ceil(triTranslated.getTriangle()[2].getX())] = triTranslated.getBrightness_char();
-            }
-
-            //We can update the monitor with vertices points
-            Monitor.setMonitor(schermo);
-            //Rasterization of triangles
-            Monitor.Rasterization(triTranslated, Buffer);
+            //[??]
+            new Rasterization(triTranslated, Buffer, Monitor);
         }
         
         return Monitor.Monitor;
