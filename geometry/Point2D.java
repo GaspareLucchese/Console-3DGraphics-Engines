@@ -1,4 +1,5 @@
 package geometry;
+
 public class Point2D 
 {
     private double x;
