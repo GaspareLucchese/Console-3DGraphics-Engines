@@ -60,9 +60,9 @@ public class Rasterization
                     //If contained in all three vectors we can add the point, and verify if is conteined on the display
                     if(((prod1 <= 0) && (prod2 <= 0) && (prod3 <= 0)) && (((int)Math.ceil(x) >= 0) && ((int)Math.ceil(y) >= 0) && ((int)Math.ceil(x) < Display.getDIMX()) && ((int)Math.ceil(y) < Display.getDIMY())))
                     {
-                        //[TO-DO] Z-buffer to Review
                         double z = calculateZ(p1, p2, p3, p);
-                        if(z < zBuffer[y][x])
+                        //If a point covered another one on monitor, we can store it in the z-buffer
+                        if(z >= zBuffer[y][x])
                         {
                             zBuffer[y][x] = z;
                             //We compute the pixel value to add to the monitor screen
@@ -94,7 +94,11 @@ public class Rasterization
         double a = (vert2.getY() - vert1.getY())*(vert3.getZ() - vert1.getZ()) - (vert3.getY() - vert1.getY())*(vert2.getZ() - vert1.getZ());
         double b = (vert2.getZ() - vert1.getZ())*(vert3.getX() - vert1.getX()) - (vert3.getZ() - vert1.getZ())*(vert2.getX() - vert1.getX());
         double c = (vert2.getX() - vert1.getX())*(vert3.getY() - vert1.getY()) - (vert3.getX() - vert1.getX())*(vert2.getY() - vert1.getY());
-        double d = -1*(a * vert1.getX() + b * vert2.getY() + c * vert3.getZ());
+        if(c == 0)
+        {
+            return Float.POSITIVE_INFINITY;
+        }
+        double d = -1*(a * vert1.getX() + b * vert1.getY() + c * vert1.getZ());
 
         return (-a * p.getX() -b * p.getY() -d) / c;
     }

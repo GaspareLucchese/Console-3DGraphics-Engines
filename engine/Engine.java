@@ -16,13 +16,13 @@ import rasterization.Rasterization;
 
 public class Engine 
 {
-    double[][] buffer = new double[Display.getDIMY()][Display.getDIMX()];
+    double[][] zBuffer = new double[Display.getDIMY()][Display.getDIMX()];
 
     //Calculate the position of new points in the mesh after the projection
     public void Rendering(Mesh mesh, Display Monitor, Trasformation trasf)
     {
         Projection Proj = new Projection();
-        ZbufferInizializer(); //[TO-DO] ZBUFFER TO REWIEW
+        inizializeZBuffer();
 
         Mesh meshGeometry = new Mesh();
         Mesh meshBackface = new Mesh(); 
@@ -53,12 +53,6 @@ public class Engine
 
                     //Now we can compute the triangle's projection
                     Triangle triProjected = Proj.Projects(cTri);
-
-                    //[TO-DO] 
-                    //ZBUFFER INIZIALIZATION TO REWIEW     
-                    triProjected.getTriangle()[0].setZ(cTri.getTriangle()[0].getZ());
-                    triProjected.getTriangle()[1].setZ(cTri.getTriangle()[1].getZ());
-                    triProjected.getTriangle()[2].setZ(cTri.getTriangle()[2].getZ());
                     
                     //Add the projected triangle in the mesh and set its previously calculated brightness
                     Triangle tri_temp = ScreenMapping.mapping_the_screen(triProjected);
@@ -74,7 +68,7 @@ public class Engine
             //Visualizing points on monitor
             for(Triangle triTranslated : finalMesh.getMesh())
             {
-                new Rasterization(triTranslated, buffer, Monitor);
+                new Rasterization(triTranslated, zBuffer, Monitor);
             }
         }
 
@@ -87,16 +81,13 @@ public class Engine
         */
     }
 
-    //[TO-DO] ZBUFFER TO REWIEW
-    public void ZbufferInizializer()
+    public void inizializeZBuffer()
     {
-        //[TO-DO] MAYBE WE CAN MOVE IN ANOTHER CLASS, TO REODER TRIANGLES
         for(int i = 0; i < Display.getDIMY(); i++)
         {
             for(int j = 0; j < Display.getDIMX(); j++)
             {
-                //[TO-DO] INIZIALIZE WITH A BIGGER NUMBER
-                this.buffer[i][j] = 999999;
+                this.zBuffer[i][j] = Double.NEGATIVE_INFINITY;
             }
         }
     }

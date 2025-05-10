@@ -4,7 +4,7 @@ public class Display
 {
     //Screen size to render
     private static final int DIMX = 470;
-    private static final int DIMY = 344;
+    private static final int DIMY = 210;
 
     public char[][] Monitor = new char[DIMY][DIMX];
     public Display()

@@ -56,12 +56,11 @@ public class Testing extends Thread
 
         
         //ROTATING TEAPOT TEST
-        /*
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
 
-        trasformation.setMovement(0, -1, 5);
+        trasformation.setMovement(0, -1, 4.4);
         for(int i = 0; i < 10000; i++)
         {
             display.reset();
@@ -83,76 +82,73 @@ public class Testing extends Thread
                 e.printStackTrace();
             } 
         }
-        */
+        
         
 
         //FRUSTUM CULLING AND CLIPPING WITH ROTATING TEAPOT TEST
-        
-        Display display = new Display();
-        Engine newEngine = new Engine();
-        Trasformation trasformation = new Trasformation();
+        // Display display = new Display();
+        // Engine newEngine = new Engine();
+        // Trasformation trasformation = new Trasformation();
 
-        trasformation.setMovement(0, -1, 5);
-        for(int i = 0; i < 10000; i++)
-        {
-            display.reset();
-            trasformation.setThetaX(-i);
-            trasformation.setThetaY(i);
-            trasformation.setThetaZ(i);
-            trasformation.setMovement(i*0.01, -1, 5);
-            newEngine.Rendering(faces, display, trasformation);
+        // trasformation.setMovement(0, -1, 5);
+        // for(int i = 0; i < 10000; i++)
+        // {
+        //     display.reset();
+        //     trasformation.setThetaX(-i);
+        //     trasformation.setThetaY(i);
+        //     trasformation.setThetaZ(i);
+        //     trasformation.setMovement(i*0.01, -1, 5);
+        //     newEngine.Rendering(faces, display, trasformation);
             
-            System.out.print("\033[H\033[2J");  
-            System.out.flush();
-            display.print();
-            //Slowing-down the print
-            try
-            {
-                Thread.sleep(20); 
-            } 
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            } 
-        }
+        //     System.out.print("\033[H\033[2J");  
+        //     System.out.flush();
+        //     display.print();
+        //     //Slowing-down the print
+        //     try
+        //     {
+        //         Thread.sleep(20); 
+        //     } 
+        //     catch(Exception e)
+        //     {
+        //         e.printStackTrace();
+        //     } 
+        // }
         
         
         
         //TEST SCALABILITY AND HIGH QUALITY
-        /*
-        Display display = new Display();
-        Engine newEngine = new Engine();
-        Trasformation trasformation = new Trasformation();
+        // Display display = new Display();
+        // Engine newEngine = new Engine();
+        // Trasformation trasformation = new Trasformation();
 
-        trasformation.setMovement(-25, -40, 155);
-        for(int i = 0; i < 100; i++)
-        {
+        // trasformation.setMovement(-25, -40, 155);
+        // for(int i = 0; i < 100; i++)
+        // {
             
-            // display.reset();
-            // newEngine.setThetaX(-30);
-            // newEngine.setThetaY(225);
-            // newEngine.setThetaZ(0);
-            // newEngine.Projects(faces, display, display.getMonitor());
+        //     // display.reset();
+        //     // newEngine.setThetaX(-30);
+        //     // newEngine.setThetaY(225);
+        //     // newEngine.setThetaZ(0);
+        //     // newEngine.Projects(faces, display, display.getMonitor());
             
              
-            display.reset();
-            trasformation.setThetaX(-15);
-            trasformation.setThetaY(-5*i);
-            trasformation.setThetaZ(0);
-            newEngine.Rendering(faces, display, trasformation);
+        //     display.reset();
+        //     trasformation.setThetaX(-15);
+        //     trasformation.setThetaY(-5*i);
+        //     trasformation.setThetaZ(0);
+        //     newEngine.Rendering(faces, display, trasformation);
             
-            System.out.print("\033[H\033[2J");  
-            System.out.flush();
-            display.print();
-            try
-            {
-                Thread.sleep(1); 
-            } 
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        */
+        //     System.out.print("\033[H\033[2J");  
+        //     System.out.flush();
+        //     display.print();
+        //     try
+        //     {
+        //         Thread.sleep(1); 
+        //     } 
+        //     catch(Exception e)
+        //     {
+        //         e.printStackTrace();
+        //     }
+        // }
     }
 }
