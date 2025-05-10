@@ -17,13 +17,15 @@ public class Testing extends Thread
 {
     public static void main(String[] args) 
     {
+        //Load vertices and faces from a .txt file with .obj notation
         InputStream path = Testing.class.getClassLoader().getResourceAsStream("scene/Teapot.txt");
 
         if (path == null) {
-            System.err.println("File Teapot.txt non trovato nel classpath!");
+            System.err.println("File not found in classpath!");
             return;
         }
-        //Creation of an ArrayList and a Mesh (ArrayList with Triangles) to memorize file's rows
+
+        //Creation of an ArrayList and a Mesh (Triangles' ArrayList) to memorize file's rows
         List<Point3D> vectors  = new ArrayList<>();
         Mesh faces = new Mesh();
 
@@ -41,7 +43,7 @@ public class Testing extends Thread
                 {
                     vectors.add(new Point3D(Double.parseDouble(word[1]),Double.parseDouble(word[2]), Double.parseDouble(word[3])));
                 }
-                else if (word[0].equals("f")) //Add the triangles to the Mesh to project
+                else if (word[0].equals("f")) //Add triangles to the Mesh to project
                 {
                     faces.addTriangle(new Triangle(vectors.get(Integer.parseInt(word[1]) - 1),vectors.get(Integer.parseInt(word[2]) - 1),vectors.get(Integer.parseInt(word[3]) - 1)));
                 }                
@@ -53,11 +55,12 @@ public class Testing extends Thread
         }
 
         
-        //TEAPOT TEST
-        
+        //ROTATING TEAPOT TEST
+        /*
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
+
         trasformation.setMovement(0, -1, 5);
         for(int i = 0; i < 10000; i++)
         {
@@ -65,29 +68,30 @@ public class Testing extends Thread
             trasformation.setThetaX(-i);
             trasformation.setThetaY(i);
             trasformation.setThetaZ(i);
-            newEngine.Rendering(faces, display, display.getMonitor(), trasformation);
+            newEngine.Rendering(faces, display, trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
             display.print();
+            //Slowing-down the print
             try
             {
                 Thread.sleep(20); 
             } 
             catch(Exception e)
-            {} 
+            {
+                e.printStackTrace();
+            } 
         }
+        */
         
 
+        //FRUSTUM CULLING AND CLIPPING WITH ROTATING TEAPOT TEST
         
-        
-
-        
-        //TEST FRUSTUM CULLING (AND CLIPPING)
-        /*
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
+
         trasformation.setMovement(0, -1, 5);
         for(int i = 0; i < 10000; i++)
         {
@@ -96,28 +100,30 @@ public class Testing extends Thread
             trasformation.setThetaY(i);
             trasformation.setThetaZ(i);
             trasformation.setMovement(i*0.01, -1, 5);
-            newEngine.Rendering(faces, display, display.getMonitor(), trasformation);
+            newEngine.Rendering(faces, display, trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
             display.print();
-            
+            //Slowing-down the print
             try
             {
                 Thread.sleep(20); 
             } 
             catch(Exception e)
-            {} 
+            {
+                e.printStackTrace();
+            } 
         }
-        */
         
         
         
-        //TEST SCALABILITY AND HQ
+        //TEST SCALABILITY AND HIGH QUALITY
         /*
         Display display = new Display();
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
+
         trasformation.setMovement(-25, -40, 155);
         for(int i = 0; i < 100; i++)
         {
@@ -133,7 +139,7 @@ public class Testing extends Thread
             trasformation.setThetaX(-15);
             trasformation.setThetaY(-5*i);
             trasformation.setThetaZ(0);
-            newEngine.Rendering(faces, display, display.getMonitor(), trasformation);
+            newEngine.Rendering(faces, display, trasformation);
             
             System.out.print("\033[H\033[2J");  
             System.out.flush();
@@ -144,7 +150,7 @@ public class Testing extends Thread
             } 
             catch(Exception e)
             {
-
+                e.printStackTrace();
             }
         }
         */

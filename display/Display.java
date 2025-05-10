@@ -3,8 +3,8 @@ package display;
 public class Display 
 {
     //Screen size to render
-    private static final int DIMX = 375;
-    private static final int DIMY = 211;
+    private static final int DIMX = 470;
+    private static final int DIMY = 344;
 
     public char[][] Monitor = new char[DIMY][DIMX];
     public Display()
@@ -16,17 +16,14 @@ public class Display
     {
         this.Monitor = Monitor;
     }
-
     public char[][] getMonitor()
     {
         return this.Monitor;
     }
-
     public static int getDIMX()
     {
         return DIMX;
     }
-
     public static int getDIMY()
     {
         return DIMY;
@@ -50,13 +47,23 @@ public class Display
         this.Monitor[y][x] = c;
     }
 
-    
-    //[?]
-    //Print all the the pixels on the monitor matrix
+    //TO-DO: CHECK IF IT THIS IS THE BEST WAY TO PRINT A FRAME
+    //Print all the the pixels on the frame (Monitor matrix)
     public void print()
     {
-        //STAMPA PER FRAME???
-        
+        //We print the frame update a single frame line (not the whole frame)
+        for(int i = 0; i < DIMY; i++)
+        {
+            StringBuilder frame = new StringBuilder();
+            for(int j = 0; j < DIMX; j++)
+            {
+                frame.append(Monitor[i][j]).append(Monitor[i][j]);
+            }
+            System.out.println(frame);
+        }
+
+        //DEPRECATED: PRINT THE WHOLE FRAME
+        /*
         StringBuilder out = new StringBuilder();
         for(int i = 0; i < DIMY; i++)
         {
@@ -67,6 +74,6 @@ public class Display
         out.append('\n');
         }
         System.out.println(out);
-        
+        */
     }
 }

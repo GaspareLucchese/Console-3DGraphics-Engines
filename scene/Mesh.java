@@ -8,7 +8,7 @@ import geometry.Triangle;
 
 public class Mesh
 {
-	//We can see the 3D mesh as a set of polygons (Triangles)
+	//We can imagine the 3D mesh as a set of polygons (Triangles)
     private List<Triangle> mesh = new ArrayList<>();
 	private Point3D[] bounding_box = new Point3D[9];
 
@@ -39,15 +39,6 @@ public class Mesh
 	public Point3D[] getBoundingBox()
     {
         return this.bounding_box;
-    }
-
-	//With this method we can copy all the triangles in this mesh to another destination
-    public void copyMesh(Mesh new_mesh)
-    {
-        for(int i = 0; i < this.mesh.size(); i++)
-		{
-			new_mesh.mesh.add(i, (this.getMesh()).get(i));
-		}
     }
 
 	//Calculate the bounding box of the mesh
@@ -87,82 +78,20 @@ public class Mesh
 
 
 	//Only for debugging
-    public void debug_print_mesh()
-    {
-        for(int i = 0; i < (this.getMesh()).size(); i++)
-        {
-            System.out.println((this.getMesh()).get(i));
-        }
-    }
-	public void print_bounding_box()
-    {
-        for(int i = 0; i < 8; i++)
-        {
-            System.out.println(bounding_box[i]);
-        }
-		System.out.println();
-    }
-
-	//This function create the maze's walls and set them in the mesh
-    public Mesh createSolid(char[][] maze, Position pos)
-	{
-		Mesh solid = new Mesh();
-
-		for(int i = (maze.length - 3); i > 1 ; i--)
-		{
-			for(int j = ((maze[0].length) - 3); j > 1; j--)
-			{
-				if(maze[i][j] == '*')
-				{
-					int xplus = 2*((- j + pos.x));
-                    int zplus = 2*((- i + pos.y));
-
-					//Default values ​​for creating a parallelepiped
-					double[][][] values = {
-
-						{{-1.0 , -2.0 , -1.0},  {-1.0 ,  1.0 , -1.0},  { 1.0 ,  1.0 , -1.0}},
-            			{{-1.0 , -2.0 , -1.0},  { 1.0 ,  1.0 , -1.0},  { 1.0 , -2.0 , -1.0}},
-
-            			{{ 1.0 , -2.0 , -1.0},  { 1.0 ,  1.0 , -1.0},  { 1.0 ,  1.0 ,  1.0}},
-            			{{ 1.0 , -2.0 , -1.0},  { 1.0 ,  1.0 ,  1.0},  { 1.0 , -2.0 ,  1.0}},
-
-            			{{ 1.0 , -2.0 ,  1.0},  { 1.0 ,  1.0 ,  1.0},  {-1.0 ,  1.0 ,  1.0}},
-            			{{ 1.0 , -2.0 ,  1.0},  {-1.0 ,  1.0 ,  1.0},  {-1.0 , -2.0 ,  1.0}},
-
-            			{{-1.0 , -2.0 ,  1.0},  {-1.0 ,  1.0 ,  1.0},  {-1.0 ,  1.0 , -1.0}},
-            			{{-1.0 , -2.0 ,  1.0},  {-1.0 ,  1.0 , -1.0},  {-1.0 , -2.0 , -1.0}},
-
-            			{{-1.0 ,  1.0 , -1.0},  {-1.0 ,  1.0 ,  1.0},  { 1.0 ,  1.0 ,  1.0}},
-            			{{-1.0 ,  1.0 , -1.0},  { 1.0 ,  1.0 ,  1.0},  { 1.0 ,  1.0 , -1.0}},
-
-            			{{ 1.0 , -2.0 ,  1.0},  {-1.0 , -2.0 ,  1.0},  {-1.0 , -2.0 , -1.0}},
-            			{{ 1.0 , -2.0 ,  1.0},  {-1.0 , -2.0 , -1.0},  { 1.0 , -2.0 , -1.0}}
-					};
-
-					//Creation of the points based on the values...
-					Point3D points[][] = new Point3D[12][3];
-        			for(int l = 0; l < 12; l++)
-        			{
-            			for (int m = 0; m < 3; m++)
-            			{
-                			Point3D temp = new Point3D(values[l][m][0] + xplus, values[l][m][1], values[l][m][2] + zplus);
-                			points[l][m] = temp;
-            			}
-        			}
-
-					//...and creation of triangles based on the points, tha we can add in the mesh
-					for(int k = 0; k < 12; k++)
-        			{
-						//if(Math.min(Math.min(Math.floor(punti[k][0].getZ()+Engine.distance), Math.floor(punti[k][1].getZ()+Engine.distance)), Math.floor(punti[k][2].getZ()+Engine.distance)) < 0)
-            			Triangle temporary = new Triangle(points[k][0], points[k][1], points[k][2]);
-                		solid.addTriangle(temporary);
-        			}
-				}
-			}
-		}
-
-		return solid;
-	}
-
+    // public void debug_print_mesh()
+    // {
+    //     for(int i = 0; i < (this.getMesh()).size(); i++)
+    //     {
+    //         System.out.println((this.getMesh()).get(i));
+    //     }
+    // }
+	// public void print_bounding_box()
+    // {
+    //     for(int i = 0; i < 8; i++)
+    //     {
+    //         System.out.println(bounding_box[i]);
+    //     }
+	// 	System.out.println();
+    // }
 }
 

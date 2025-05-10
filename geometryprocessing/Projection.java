@@ -8,7 +8,6 @@ public class Projection
 {
     private double[][] matrixPerspective = new double[4][4];
 
-    //[!] Move all in Projection.java
     public Projection()
     {
         for(int i = 0; i < 4; i++)
@@ -40,7 +39,7 @@ public class Projection
         return new Triangle(MatrixMultiplication(tri.getTriangle()[0], matrixPerspective), MatrixMultiplication(tri.getTriangle()[1], matrixPerspective), MatrixMultiplication(tri.getTriangle()[2], matrixPerspective));
     }
 
-    //To calculate matrix multiplications
+    //To compute matrix multiplications
     public Point3D MatrixMultiplication(Point3D i, double[][] m)
     {
         Point3D o = new Point3D();

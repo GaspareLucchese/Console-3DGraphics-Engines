@@ -6,7 +6,6 @@ import scene.Mesh;
 
 public class Trasformation {
 
-    //[?]
     //Angles to rotate the mesh
     private double fThetaX = Math.toRadians(0);
     private double fThetaY = Math.toRadians(0);
@@ -42,12 +41,12 @@ public class Trasformation {
 
         for(int l = 0; l < (mesh.getMesh()).size(); l++)
         {
-            //We extract all the tringles in the mesh
+            //We extract all the triangles in the mesh
             Triangle tri = (mesh.getMesh()).get(l);
             Triangle triRotated = new Triangle();
 
-            //[?]
-            //Un'eventuale scale va applicato prima della rotazione!
+            //[TO-DO]
+            //ADD SCALING TO THIS POINT!
 
             //We can now apply the rotation to individual points
             triRotated.setTriangle(MatrixMultiplication2(tri.getTriangle()[0], matrixRotX), MatrixMultiplication2(tri.getTriangle()[1], matrixRotX), MatrixMultiplication2(tri.getTriangle()[2], matrixRotX));
@@ -55,9 +54,9 @@ public class Trasformation {
             triRotated.setTriangle(MatrixMultiplication2(triRotated.getTriangle()[0], matrixRotZ), MatrixMultiplication2(triRotated.getTriangle()[1], matrixRotZ), MatrixMultiplication2(triRotated.getTriangle()[2], matrixRotZ));
 
             Triangle triTranslated = new Triangle(triRotated.getTriangle()[0], triRotated.getTriangle()[1], triRotated.getTriangle()[2]);
-            //[??]
-            //Trasliamo il Triangolo (riv se necessaria la copia)
-            //??controlliamo se la condizione nell'if è necessaria/da cambiare
+
+            //[TO-DO] CHECK IF WE NEED TO COPY THE TRIANGLE AND CHECK THE IF CONDITION
+            //Applying the traslation
             if(triTranslated.getTriangle()[0].getZ()+distance > 0)
             {  
                 triTranslated.getTriangle()[0].setZ(triTranslated.getTriangle()[0].getZ() + distance);

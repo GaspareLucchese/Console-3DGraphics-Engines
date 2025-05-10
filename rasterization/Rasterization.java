@@ -4,16 +4,15 @@ import display.Display;
 import geometry.Point2D;
 import geometry.Point3D;
 import geometry.Triangle;
+import pixelprocessing.FlatPixelShader;
 
 public class Rasterization
 {
-    public int ymin, ymax, xmin, xmax;
-
     private final Triangle T;
     private final double[][] zBuffer;
     private final Display display;
     Point3D p1, p2, p3;
-
+    public int ymin, ymax, xmin, xmax;
     
     public Rasterization(Triangle T, double[][] zBuffer, Display display)
     {
@@ -39,12 +38,10 @@ public class Rasterization
         this.xmax = (int) Math.max(Math.max(p1.getX(), p2.getX()), p3.getX());
 
         this.triangleTraversal();
-        
     }
 
     public void triangleTraversal()
     {
-        //[?]
         //We can iterate only in the triangle tha contains the triangle
         for(int y = ymax; y >= ymin; y--)
         {
@@ -59,18 +56,17 @@ public class Rasterization
                     double prod2 = cross_product(p2, p3, p);
                     double prod3 = cross_product(p3, p1, p);
 
-                    //[?]
-                    //Non dovevano essere tutti e tre positivi????????
+                    //[TO-DO] The three cross-products should not be all positive???
                     //If contained in all three vectors we can add the point, and verify if is conteined on the display
                     if(((prod1 <= 0) && (prod2 <= 0) && (prod3 <= 0)) && (((int)Math.ceil(x) >= 0) && ((int)Math.ceil(y) >= 0) && ((int)Math.ceil(x) < Display.getDIMX()) && ((int)Math.ceil(y) < Display.getDIMY())))
                     {
-                        //[?]
-                        //Z-buffer da sistemare?????
+                        //[TO-DO] Z-buffer to Review
                         double z = calculateZ(p1, p2, p3, p);
-                        if(z <= zBuffer[y][x])
+                        if(z < zBuffer[y][x])
                         {
                             zBuffer[y][x] = z;
-                            display.addPoint(x, y, T.getBrightness_char());
+                            //We compute the pixel value to add to the monitor screen
+                            display.addPoint(x, y, FlatPixelShader.pixelProcessing(T.getBrightness_value()));
                         }
                     }
                 } 

@@ -25,7 +25,7 @@ public class BackfaceCulling
     {
         Point3D normal = tri.normal().normalized();
         double result = normal.dotProduct(tri.getCentroid());
-        //backface-culling = dot product between the triangle's vector and its normal
+        //Backface Culling = dot product between the triangle's vector and its normal
         if(result < 0)
         {
             return true;

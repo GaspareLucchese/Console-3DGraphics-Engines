@@ -3,7 +3,6 @@ package geometry;
 public class Triangle 
 {
     private double brightness_value = 0;
-    private char brightness_char = ' ';
     public Point3D zero = new Point3D(0, 0, 0);
 
     public Triangle()
@@ -66,6 +65,7 @@ public class Triangle
         return normal;
     }
 
+    //Coordinates sum divided by 3
     public Point3D getCentroid()
     {
         Point3D centroid = new Point3D(
@@ -76,54 +76,13 @@ public class Triangle
         return centroid;
     }
 
-    //Setter and getter methods for manage the brightness and its visualization
-    public void setBrightness_char(double lum)
+    //Setter and getter methods for manage the brightness value calculated for a face
+    public void setBrightness_value(double brightness_value)
     {
-        this.brightness_char = value_to_ASCII(lum);
+        this.brightness_value = brightness_value;
     }
     public double getBrightness_value()
     {
         return this.brightness_value;
-    }
-    public char getBrightness_char()
-    {
-        return this.brightness_char;
-    }
-    
-    //We can convert the brigthness value with a set of ASCII characters to simulate the shadow
-    public char value_to_ASCII(double lumi)
-    {
-        //11 is used only to normalize 
-        int pixel = (int) (11*lumi);
-
-        switch(pixel)
-        {
-            case 0: 
-                return '.';
-            case 1: 
-                return ',';
-            case 2: 
-                return '-';
-            case 3: 
-                return '~';
-            case 4: 
-                return ':';
-            case 5: 
-                return ';';
-            case 6: 
-                return '=';
-            case 7: 
-                return '!';
-            case 8: 
-                return '*';
-            case 9: 
-                return '#';
-            case 10: 
-                return '$';
-            case 11: 
-                return '@';
-            default:
-                return '.';
-        }
     }
 }
