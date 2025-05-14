@@ -1,14 +1,10 @@
 package geometry;
 
+//This class is used to represent a triangle in 3D space
 public class Triangle 
 {
     private double brightness_value = 0;
     public Point3D zero = new Point3D(0, 0, 0);
-
-    public Triangle()
-    {
-         this.setTriangle(zero, zero, zero);
-    }
 
     private Point3D p1;
     private Point3D p2;
@@ -19,24 +15,24 @@ public class Triangle
     {
         this.setTriangle(p1, p2, p3);
     }
+     public Triangle()
+    {
+         this.setTriangle(zero, zero, zero);
+    }
 
+    //Setters and Getters Methods
     public void setTriangle(Point3D p1, Point3D p2, Point3D p3)
     {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
     }
-
     public Point3D[] getTriangle()
     {
         return new Point3D[]{p1, p2, p3};
     }
    
-    public String toString()
-    {
-        return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
-    }
-
+    //Get the triangle's normal, which is a vector perpendicular to the triangle's plane
     public Point3D normal()
     {
         Point3D normal = new Point3D();
@@ -57,6 +53,7 @@ public class Triangle
         normal.setY(line1.getZ()*line2.getX() - line1.getX()*line2.getZ());
         normal.setZ(line1.getX()*line2.getY() - line1.getY()*line2.getX());
 
+        //Normalize the normal
         double lung = Math.sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
         normal.setX(normal.getX()/lung);
         normal.setY(normal.getY()/lung);
@@ -65,7 +62,7 @@ public class Triangle
         return normal;
     }
 
-    //Coordinates sum divided by 3
+    //Get the triangle's centroid, which is the average of the three vertices
     public Point3D getCentroid()
     {
         Point3D centroid = new Point3D(
@@ -76,7 +73,7 @@ public class Triangle
         return centroid;
     }
 
-    //Setter and getter methods for manage the brightness value calculated for a face
+    //Setter and getter methods to manage the brightness value calculated for a face
     public void setBrightness_value(double brightness_value)
     {
         this.brightness_value = brightness_value;
@@ -85,4 +82,10 @@ public class Triangle
     {
         return this.brightness_value;
     }
+
+    public String toString()
+    {
+        return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
+    }
+
 }

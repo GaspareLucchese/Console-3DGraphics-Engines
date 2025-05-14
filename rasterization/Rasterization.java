@@ -6,6 +6,7 @@ import geometry.Point3D;
 import geometry.Triangle;
 import pixelprocessing.FlatPixelShader;
 
+//This class is used to rasterize a triangle in 3D space into a 2D image using a z-buffer for depth testing.
 public class Rasterization
 {
     private final Triangle T;
@@ -75,6 +76,7 @@ public class Rasterization
     }
 
     //[TO-DO: MOVE IN ANOTHER CLASS]
+    //Cross product between two vectors
     public double cross_product(Point3D p1, Point3D p2, Point2D p3)
     {
         double ax = (p2.getX() - p1.getX());

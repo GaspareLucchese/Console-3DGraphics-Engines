@@ -4,6 +4,7 @@ import geometry.Point3D;
 import geometry.Triangle;
 import scene.Mesh;
 
+//This class is used to apply transformations to a mesh
 public class Trasformation {
 
     //Angles to rotate the mesh

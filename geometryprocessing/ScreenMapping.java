@@ -3,8 +3,14 @@ package geometryprocessing;
 import display.Display;
 import geometry.Triangle;
 
+/*
+This class is used to map the triangle to the screen coordinates.
+The screen coordinates are in the range [0, 1] for both x and y.
+The triangle is mapped to the screen coordinates by centering it and scaling it based on the screen size.
+*/
 public class ScreenMapping 
 {
+    //This method maps the triangle to the screen coordinates
     public static Triangle mapping_the_screen(Triangle tri)
     {
         //Center in screen and scale, based on the screen size

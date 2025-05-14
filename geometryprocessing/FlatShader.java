@@ -3,7 +3,7 @@ package geometryprocessing;
 import geometry.Point3D;
 import geometry.Triangle;
 
-
+//This class is used to compute the brightness of a triangle based on the Lambertian reflection model.
 public class FlatShader 
 {
     //[TO-DO]
@@ -25,7 +25,11 @@ public class FlatShader
         double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ(); 
         
         //We limit the brightness value between 0 and 1
-        return Math.max(0, Math.min(brightness_value, 1));
+        return Math.min(Math.max(0, brightness_value), 1);
+
+        //LAMBERT REFLECTION MODEL
+        // double kd = 0.85;
+        // return Math.min(kd * Math.max(0, brightness_value), 1);
     }
     
 }

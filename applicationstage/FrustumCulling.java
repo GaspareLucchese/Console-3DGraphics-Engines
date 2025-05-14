@@ -3,8 +3,10 @@ package applicationstage;
 import display.Display;
 import geometry.Point3D;
 
+//Is used to remove the triangles that are not visible to the camera
 public class FrustumCulling 
 {
+    //Camera parameters
     static double fNear = 0.01;
     static double fFar = 1000.0;
     static double fFov = Math.toRadians(90.0);
@@ -16,11 +18,13 @@ public class FrustumCulling
 
         for (double[] plane : frustumPlanes) 
         {
+            //Count the number of vertices outside the frustum
             int out = 0;
             for (Point3D p : box) 
             {
                 //Dot product between plane and the vertex point
                 double distance = plane[0]*p.getX() + plane[1]*p.getY() + plane[2]*p.getZ() + plane[3];
+                //If the distance is negative, the vertex is outside the frustum
                 if (distance < 0) 
                 {
                     out++;
@@ -32,6 +36,7 @@ public class FrustumCulling
                 return false;
             }
         }
+        //If at least one vertex is inside the frustum, we keep the mesh
         return true;
     }
 
@@ -50,12 +55,16 @@ public class FrustumCulling
             {-nearWidth,  nearHeight, fNear}  //top-left corner
         };
 
+        //[TO-DO] TESTARE
         //Near plane
-        planes[0] = createPlaneFromPoints(
-            frustumCorners[0][0], frustumCorners[0][1], frustumCorners[0][2],
-            frustumCorners[1][0], frustumCorners[1][1], frustumCorners[1][2],
-            frustumCorners[2][0], frustumCorners[2][1], frustumCorners[2][2]
-        );
+        // planes[0] = createPlaneFromPoints(
+        //     frustumCorners[0][0], frustumCorners[0][1], frustumCorners[0][2],
+        //     frustumCorners[1][0], frustumCorners[1][1], frustumCorners[1][2],
+        //     frustumCorners[2][0], frustumCorners[2][1], frustumCorners[2][2]
+        // );
+
+        //Near plane: fixed normal (+Z) and distance == fNear
+        planes[0] = new double[]{0, 0, 1, -fNear};
 
         //Far plane: fixed normal (-Z) and distance == fFar
         planes[1] = new double[]{0, 0, -1, fFar};
@@ -92,7 +101,6 @@ public class FrustumCulling
         return planes;
     }
 
-    //[TO-DO] Code and Comments Review
     private static double[] createPlaneFromPoints(
         double x1, double y1, double z1,
         double x2, double y2, double z2,
@@ -123,6 +131,7 @@ public class FrustumCulling
         //Distance point-plane => dot product between the -(plane normal) and the plane
         double d = -(normal[0]*x1 + normal[1]*y1 + normal[2]*z1);
 
+        //The plane equation is: a*x + b*y + c*z + d = 0
         return new double[]{normal[0], normal[1], normal[2], d};
     }
 }

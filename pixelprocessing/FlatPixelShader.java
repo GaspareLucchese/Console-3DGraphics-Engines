@@ -1,5 +1,6 @@
 package pixelprocessing;
 
+//This class is used to process the pixels of the imag
 public class FlatPixelShader
 {    
     //We can convert the brigthness value with a set of ASCII characters to simulate the shadow
@@ -8,7 +9,7 @@ public class FlatPixelShader
         //We don't need to calculate interpolation with FlatShader, 
         //so we can procede to merging
 
-        //11 is used only to normalize 
+        //11 is used only to normalize the value between 0 and 11
         int pixel = (int) (11*lumi);
 
         switch(pixel)
