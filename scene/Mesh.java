@@ -6,9 +6,10 @@ import java.util.List;
 import geometry.Point3D;
 import geometry.Triangle;
 
+//This class is used to represent a 3D mesh, which is a collection of triangles.
 public class Mesh
 {
-	//We can imagine the 3D mesh as a set of polygons (Triangles)
+	//The mesh is a list of triangles
     private List<Triangle> mesh = new ArrayList<>();
 	private Point3D[] bounding_box = new Point3D[9];
 
@@ -17,12 +18,7 @@ public class Mesh
         this.mesh.add(triangle);
     }
 
-	public void modifyTriangle(int i, Triangle triangle)
-    {
-        this.mesh.set(i, triangle);
-    }
-
-	//Setter method to modify the mesh
+	//Setters and Getters Methods
     public void setMesh(List<Triangle> Mesh)
     {
         this.mesh = Mesh;
@@ -31,7 +27,6 @@ public class Mesh
 	{
 		this.bounding_box = this.createBoundinBox();
 	}
-
     public List<Triangle> getMesh()
     {
         return this.mesh;
@@ -55,6 +50,7 @@ public class Mesh
 		{
 			for(Point3D p : tri.getTriangle())
 			{
+                
 				minX = Math.min(minX, p.getX());
 				minY = Math.min(minY, p.getY());
 				minZ = Math.min(minZ, p.getZ());
@@ -77,7 +73,7 @@ public class Mesh
 	}
 
 
-	//Only for debugging
+	//Only for Debugging
     // public void debug_print_mesh()
     // {
     //     for(int i = 0; i < (this.getMesh()).size(); i++)

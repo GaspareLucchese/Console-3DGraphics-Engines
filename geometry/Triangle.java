@@ -1,42 +1,98 @@
 package geometry;
 
+//This class is used to represent a triangle in 3D space
 public class Triangle 
 {
-    private double brightness_value = 0;
-    public Point3D zero = new Point3D(0, 0, 0);
+    private double[] brightness_value = {0, 0, 0};
 
-    public Triangle()
-    {
-         this.setTriangle(zero, zero, zero);
-    }
+    //[TO-DO] Use this face normal instead of calculating it every time
+    private Point3D faceNormal;
 
     private Point3D p1;
     private Point3D p2;
     private Point3D p3;
+
+    private Point3D normalVertex1;
+    private Point3D normalVertex2;
+    private Point3D normalVertex3;
 
     //The triangle is created from three points (vertices)
     public Triangle(Point3D p1, Point3D p2, Point3D p3)
     {
         this.setTriangle(p1, p2, p3);
     }
+     public Triangle()
+    {
+        this.setTriangle(new Point3D(0, 0, 0), new Point3D(0, 0, 0), new Point3D(0, 0, 0));
+    }
+    public Triangle(Point3D p1, Point3D p2, Point3D p3, Point3D n1, Point3D n2, Point3D n3)
+    {
+        this.setTriangle(p1, p2, p3);
+        this.setFaceNormal();
+        this.setVertexNormals(n1, n2, n3);
+    }
 
+    //Setters and Getters Methods
     public void setTriangle(Point3D p1, Point3D p2, Point3D p3)
     {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
+        this.setFaceNormal();
     }
-
     public Point3D[] getTriangle()
     {
         return new Point3D[]{p1, p2, p3};
     }
-   
-    public String toString()
+    //[TO-DO]
+    public void setVertexNormals(Point3D n1, Point3D n2, Point3D n3) 
     {
-        return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
+        this.normalVertex1 = n1;
+        this.normalVertex2 = n2;
+        this.normalVertex3 = n3;
     }
+    //[TO-DO] Verify this snippet
+    public Point3D[] getNormals() 
+    {
+        double nnn1 = Math.sqrt(this.normalVertex1.getX()*this.normalVertex1.getX() + this.normalVertex1.getY()*this.normalVertex1.getY() + this.normalVertex1.getZ()*this.normalVertex1.getZ());
+        if (Math.abs(nnn1) < 1e-6) 
+        {
+            return null; //No intersection, or the points are on the plane
+        }
+        this.normalVertex1.setX(this.normalVertex1.getX()/nnn1);
+        this.normalVertex1.setY(this.normalVertex1.getY()/nnn1);
+        this.normalVertex1.setZ(this.normalVertex1.getZ()/nnn1);
 
+        double nnn2 = Math.sqrt(this.normalVertex2.getX()*this.normalVertex2.getX() + this.normalVertex2.getY()*this.normalVertex2.getY() + this.normalVertex2.getZ()*this.normalVertex2.getZ());
+        this.normalVertex2.setX(this.normalVertex2.getX()/nnn2);
+        this.normalVertex2.setY(this.normalVertex2.getY()/nnn2);
+        this.normalVertex2.setZ(this.normalVertex2.getZ()/nnn2);
+         if (Math.abs(nnn2) < 1e-6) 
+        {
+            return null; //No intersection, or the points are on the plane
+        }
+
+        double nnn3 = Math.sqrt(this.normalVertex3.getX()*this.normalVertex3.getX() + this.normalVertex3.getY()*this.normalVertex3.getY() + this.normalVertex3.getZ()*this.normalVertex3.getZ());
+        this.normalVertex3.setX(this.normalVertex3.getX()/nnn3);
+        this.normalVertex3.setY(this.normalVertex3.getY()/nnn3);
+        this.normalVertex3.setZ(this.normalVertex3.getZ()/nnn3);
+         if (Math.abs(nnn3) < 1e-6) 
+        {
+            return null; //No intersection, or the points are on the plane
+        }
+
+        return new Point3D[]{this.normalVertex1, this.normalVertex2, this.normalVertex3};
+    }
+    public Point3D getFaceNormal() 
+    {
+        return this.faceNormal;
+    }
+    public void setFaceNormal() 
+    {
+        this.faceNormal = this.normal();
+    }
+   
+    //Get the triangle's normal, which is a vector perpendicular to the triangle's plane
     public Point3D normal()
     {
         Point3D normal = new Point3D();
@@ -57,6 +113,7 @@ public class Triangle
         normal.setY(line1.getZ()*line2.getX() - line1.getX()*line2.getZ());
         normal.setZ(line1.getX()*line2.getY() - line1.getY()*line2.getX());
 
+        //Normalize the normal
         double lung = Math.sqrt(normal.getX()*normal.getX() + normal.getY()*normal.getY() + normal.getZ()*normal.getZ());
         normal.setX(normal.getX()/lung);
         normal.setY(normal.getY()/lung);
@@ -65,7 +122,7 @@ public class Triangle
         return normal;
     }
 
-    //Coordinates sum divided by 3
+    //Get the triangle's centroid, which is the average of the three vertices
     public Point3D getCentroid()
     {
         Point3D centroid = new Point3D(
@@ -76,13 +133,18 @@ public class Triangle
         return centroid;
     }
 
-    //Setter and getter methods for manage the brightness value calculated for a face
-    public void setBrightness_value(double brightness_value)
+    //Setter and getter methods to manage the brightness value calculated for a face
+    public void setBrightness_value(double[] brightness_value)
     {
         this.brightness_value = brightness_value;
     }
-    public double getBrightness_value()
+    public double[] getBrightness_value()
     {
         return this.brightness_value;
+    }
+
+    public String toString()
+    {
+        return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
     }
 }

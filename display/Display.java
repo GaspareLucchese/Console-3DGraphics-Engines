@@ -1,10 +1,11 @@
 package display;
 
+//This class is used to represent the display screen
 public class Display 
 {
     //Screen size to render
     private static final int DIMX = 470;
-    private static final int DIMY = 344;
+    private static final int DIMY = 210;
 
     public char[][] Monitor = new char[DIMY][DIMX];
     public Display()
@@ -12,6 +13,7 @@ public class Display
         this.setMonitor(Monitor);
     }
 
+    //Setters and Getters Methods
     public void setMonitor(char[][] Monitor)
     {
         this.Monitor = Monitor;
@@ -47,7 +49,7 @@ public class Display
         this.Monitor[y][x] = c;
     }
 
-    //TO-DO: CHECK IF IT THIS IS THE BEST WAY TO PRINT A FRAME
+    //[TO-DO]: CHECK IF IT THIS IS THE BEST WAY TO PRINT A FRAME
     //Print all the the pixels on the frame (Monitor matrix)
     public void print()
     {

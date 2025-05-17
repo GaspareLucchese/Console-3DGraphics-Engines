@@ -4,6 +4,7 @@ import display.Display;
 import geometry.Point3D;
 import geometry.Triangle;
 
+//This class is used to project 3D points into 2D space using a perspective projection matrix.
 public class Projection 
 {
     private double[][] matrixPerspective = new double[4][4];
@@ -32,10 +33,9 @@ public class Projection
         matrixPerspective[3][3] = 0;        
     }
 
-
     public Triangle Projects(Triangle tri)
     {
-        //Apply the projection
+        //Apply the projection to a Triangle
         return new Triangle(MatrixMultiplication(tri.getTriangle()[0], matrixPerspective), MatrixMultiplication(tri.getTriangle()[1], matrixPerspective), MatrixMultiplication(tri.getTriangle()[2], matrixPerspective));
     }
 

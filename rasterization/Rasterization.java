@@ -4,15 +4,17 @@ import display.Display;
 import geometry.Point2D;
 import geometry.Point3D;
 import geometry.Triangle;
-import pixelprocessing.FlatPixelShader;
+import pixelprocessing.GouraudPixelShader;
 
+//This class is used to rasterize a triangle in 3D space into a 2D image using a z-buffer for depth testing.
 public class Rasterization
 {
     private final Triangle T;
     private final double[][] zBuffer;
     private final Display display;
     Point3D p1, p2, p3;
-    public int ymin, ymax, xmin, xmax;
+    private int ymin, ymax, xmin, xmax;
+    private double alpha, beta, gamma;
     
     public Rasterization(Triangle T, double[][] zBuffer, Display display)
     {
@@ -60,13 +62,15 @@ public class Rasterization
                     //If contained in all three vectors we can add the point, and verify if is conteined on the display
                     if(((prod1 <= 0) && (prod2 <= 0) && (prod3 <= 0)) && (((int)Math.ceil(x) >= 0) && ((int)Math.ceil(y) >= 0) && ((int)Math.ceil(x) < Display.getDIMX()) && ((int)Math.ceil(y) < Display.getDIMY())))
                     {
-                        //[TO-DO] Z-buffer to Review
                         double z = calculateZ(p1, p2, p3, p);
-                        if(z < zBuffer[y][x])
+                        //If a point covered another one on monitor, we can store it in the z-buffer
+                        if(z >= zBuffer[y][x])
                         {
                             zBuffer[y][x] = z;
+                            //We set the parameters for the barycentric coordinate system (alpha, beta, gamma)
+                            setBarycentricCoordinates(T, p);
                             //We compute the pixel value to add to the monitor screen
-                            display.addPoint(x, y, FlatPixelShader.pixelProcessing(T.getBrightness_value()));
+                            display.addPoint(x, y, GouraudPixelShader.pixelProcessing(T.getBrightness_value(), alpha, beta, gamma));
                         }
                     }
                 } 
@@ -75,6 +79,7 @@ public class Rasterization
     }
 
     //[TO-DO: MOVE IN ANOTHER CLASS]
+    //Cross product between two vectors
     public double cross_product(Point3D p1, Point3D p2, Point2D p3)
     {
         double ax = (p2.getX() - p1.getX());
@@ -94,8 +99,31 @@ public class Rasterization
         double a = (vert2.getY() - vert1.getY())*(vert3.getZ() - vert1.getZ()) - (vert3.getY() - vert1.getY())*(vert2.getZ() - vert1.getZ());
         double b = (vert2.getZ() - vert1.getZ())*(vert3.getX() - vert1.getX()) - (vert3.getZ() - vert1.getZ())*(vert2.getX() - vert1.getX());
         double c = (vert2.getX() - vert1.getX())*(vert3.getY() - vert1.getY()) - (vert3.getX() - vert1.getX())*(vert2.getY() - vert1.getY());
-        double d = -1*(a * vert1.getX() + b * vert2.getY() + c * vert3.getZ());
+        if(c == 0)
+        {
+            return Float.POSITIVE_INFINITY;
+        }
+        double d = -1*(a * vert1.getX() + b * vert1.getY() + c * vert1.getZ());
 
         return (-a * p.getX() -b * p.getY() -d) / c;
+    }
+
+    //We set the parameters for the barycentric coordinate system
+    public void setBarycentricCoordinates(Triangle t, Point2D p)
+    {
+        //We calculate the barycentric coordinates as the ratio of the area of the triangle formed by the point and two vertices of the triangle to the area of the triangle itself
+        double areaT = area(t.getTriangle()[0], t.getTriangle()[1], t.getTriangle()[2]);
+        this.alpha = area(p, t.getTriangle()[1], t.getTriangle()[2]) / areaT;
+        this.beta = area(p, t.getTriangle()[2], t.getTriangle()[0]) / areaT;
+        this.gamma = area(p, t.getTriangle()[0], t.getTriangle()[1]) / areaT;
+    }
+
+    //[TO-DO] Check this method
+    //We calculate the area of a triangle using the determinant formula
+    public double area(Point2D p1, Point3D p2, Point3D p3)
+    {
+        return Math.abs((p1.getX() * (p2.getY() - p3.getY()) +
+                        p2.getX() * (p3.getY() - p1.getY()) +
+                        p3.getX() * (p1.getY() - p2.getY())) / 2.0);
     }
 }
