@@ -55,5 +55,4 @@ public class Point3D extends Point2D
 	{
 		return ("( " + this.getX() + " , " + this.getY() + " , " + this.getZ() + " )");
 	}
-    
 }

@@ -24,12 +24,8 @@ public class FlatShader
         //To obtain the brightness value we should apply the dot product between the light vector and the triangle's normal vector 
         double brightness_value = normal.getX()*light.getX() + normal.getY()*light.getY() + normal.getZ()*light.getZ(); 
         
-        //We limit the brightness value between 0 and 1
-        return Math.min(Math.max(0, brightness_value), 1);
-
         //LAMBERT REFLECTION MODEL
-        // double kd = 0.85;
-        // return Math.min(kd * Math.max(0, brightness_value), 1);
+        double kd = 0.80;
+        return Math.min(kd * Math.max(0, brightness_value), 1);
     }
-    
 }

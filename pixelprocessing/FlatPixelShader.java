@@ -1,6 +1,6 @@
 package pixelprocessing;
 
-//This class is used to process the pixels of the imag
+//This class is used to process the pixels of the image
 public class FlatPixelShader
 {    
     //We can convert the brigthness value with a set of ASCII characters to simulate the shadow
@@ -9,37 +9,25 @@ public class FlatPixelShader
         //We don't need to calculate interpolation with FlatShader, 
         //so we can procede to merging
 
-        //11 is used only to normalize the value between 0 and 11
-        int pixel = (int) (11*lumi);
+        //We need to apply the gamma correction to the interpolated brightness value
+        //double gammaCorrected = Math.pow(clamp(lumi, 0, 1), 1.0 / 2.2);
 
-        switch(pixel)
-        {
-            case 0: 
-                return '.';
-            case 1: 
-                return ',';
-            case 2: 
-                return '-';
-            case 3: 
-                return '~';
-            case 4: 
-                return ':';
-            case 5: 
-                return ';';
-            case 6: 
-                return '=';
-            case 7: 
-                return '!';
-            case 8: 
-                return '*';
-            case 9: 
-                return '#';
-            case 10: 
-                return '$';
-            case 11: 
-                return '@';
-            default:
-                return '.';
-        }
+        //MERGING STAGE
+        final char[] asciiScale = {'.', ':', '-', '~', '=', '+', '*', '#', '%', 'B', '@'};
+
+        //We can normalize the value between 0 and the (array size - 1)
+        int index = (int)(lumi * (asciiScale.length - 1));
+
+        //We set constraints for the brightness value
+        index = Math.max(0, Math.min(index, asciiScale.length - 1));
+
+        //Return the corresponding ASCII character
+        return asciiScale[index];
+ 
     }
+
+    //This method is used to clamp the value between min and max
+    // private static double clamp(double val, double min, double max) {
+    //     return Math.max(min, Math.min(max, val));
+    // }
 }

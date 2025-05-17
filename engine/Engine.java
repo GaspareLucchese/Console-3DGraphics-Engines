@@ -50,7 +50,7 @@ public class Engine
                                 
                 for (Triangle cTri : clipped)
                 {
-                    //We calculate the brightness value of the triangle using the FlatShader
+                    //We calculate the brightness value of the triangle using the Flat Shader
                     double brightness_value = FlatShader.computeBrightness(cTri);
 
                     //Now we can compute the triangle's projection

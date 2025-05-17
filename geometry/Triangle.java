@@ -87,5 +87,4 @@ public class Triangle
     {
         return ("(" + p1.toString() + ", " + p2.toString() + ", " + p3 + ")");
     }
-
 }
