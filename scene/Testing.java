@@ -159,7 +159,6 @@ public class Testing extends Thread
             e.printStackTrace();
         }
 
-        
         //ROTATING TEAPOT TEST
         Display display = new Display();
         Engine newEngine = new Engine();
@@ -174,13 +173,13 @@ public class Testing extends Thread
             trasformation.setThetaZ(i);
             newEngine.Rendering(faces, display, trasformation);
             
-            System.out.print("\033[H\033[2J");  
+            System.out.print("\033[H");  
             System.out.flush();
             display.print();
             //Slowing-down the print
             try
             {
-                Thread.sleep(20); 
+                Thread.sleep(16); 
             } 
             catch(Exception e)
             {

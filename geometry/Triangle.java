@@ -54,34 +54,17 @@ public class Triangle
     //[TO-DO] Verify this snippet
     public Point3D[] getNormals() 
     {
-        double nnn1 = Math.sqrt(this.normalVertex1.getX()*this.normalVertex1.getX() + this.normalVertex1.getY()*this.normalVertex1.getY() + this.normalVertex1.getZ()*this.normalVertex1.getZ());
-        if (Math.abs(nnn1) < 1e-6) 
-        {
-            return null; //No intersection, or the points are on the plane
-        }
-        this.normalVertex1.setX(this.normalVertex1.getX()/nnn1);
-        this.normalVertex1.setY(this.normalVertex1.getY()/nnn1);
-        this.normalVertex1.setZ(this.normalVertex1.getZ()/nnn1);
+        if (normalVertex1 == null || normalVertex2 == null || normalVertex3 == null)
+        return null;
 
-        double nnn2 = Math.sqrt(this.normalVertex2.getX()*this.normalVertex2.getX() + this.normalVertex2.getY()*this.normalVertex2.getY() + this.normalVertex2.getZ()*this.normalVertex2.getZ());
-        this.normalVertex2.setX(this.normalVertex2.getX()/nnn2);
-        this.normalVertex2.setY(this.normalVertex2.getY()/nnn2);
-        this.normalVertex2.setZ(this.normalVertex2.getZ()/nnn2);
-         if (Math.abs(nnn2) < 1e-6) 
-        {
-            return null; //No intersection, or the points are on the plane
-        }
+        Point3D n1 = normalVertex1.normalized();
+        Point3D n2 = normalVertex2.normalized();
+        Point3D n3 = normalVertex3.normalized();
 
-        double nnn3 = Math.sqrt(this.normalVertex3.getX()*this.normalVertex3.getX() + this.normalVertex3.getY()*this.normalVertex3.getY() + this.normalVertex3.getZ()*this.normalVertex3.getZ());
-        this.normalVertex3.setX(this.normalVertex3.getX()/nnn3);
-        this.normalVertex3.setY(this.normalVertex3.getY()/nnn3);
-        this.normalVertex3.setZ(this.normalVertex3.getZ()/nnn3);
-         if (Math.abs(nnn3) < 1e-6) 
-        {
-            return null; //No intersection, or the points are on the plane
-        }
+        if (n1 == null || n2 == null || n3 == null)
+            return null;
 
-        return new Point3D[]{this.normalVertex1, this.normalVertex2, this.normalVertex3};
+        return new Point3D[]{n1, n2, n3};
     }
     public Point3D getFaceNormal() 
     {

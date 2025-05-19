@@ -44,17 +44,17 @@ public class Engine
             //GEOMETRY PROCESSING STAGE
             //Calculating the frustum planes to apply clipping
             double [][] planes = FrustumCulling.computeFrustumPlanes();
-            for(Triangle cTri : meshBackface.getMesh())
+            for(Triangle tri : meshBackface.getMesh())
             {
                 //We list all the clipped triangles
-                //List<Triangle> clipped = Clipping.clipTriangleAgainstFrustum(tri, planes);
+                List<Triangle> clipped = Clipping.clipTriangleAgainstFrustum(tri, planes);
                                 
-                // for (Triangle cTri : clipped)
-                // {
-                    // if (cTri.getNormals() == null)
-                    // {
-                    //     cTri.setVertexNormals(cTri.getFaceNormal(), cTri.getFaceNormal(), cTri.getFaceNormal());
-                    // }
+                for (Triangle cTri : clipped)
+                {
+                    if (cTri.getNormals() == null)
+                    {
+                        cTri.setVertexNormals(cTri.getFaceNormal(), cTri.getFaceNormal(), cTri.getFaceNormal());
+                    }
                     //We calculate the brightness value of the triangle using the Gouraud Shader
                     double [] brightness_value = GouraudShader.computeBrightness(cTri);
 
@@ -67,7 +67,7 @@ public class Engine
                     
                     //We add the triangle to the final mesh
                     finalMesh.addTriangle(tri_temp);
-                //}                   
+                }                   
             }
 
             //[TO-DO]
