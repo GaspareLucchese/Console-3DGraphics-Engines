@@ -28,4 +28,5 @@ public class FlatShader
         double kd = 0.80;
         return Math.min(kd * Math.max(0, brightness_value), 1);
     }
+    
 }

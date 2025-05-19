@@ -51,11 +51,12 @@ public class Display
 
     //[TO-DO]: CHECK IF IT THIS IS THE BEST WAY TO PRINT A FRAME
     //Print all the the pixels on the frame (Monitor matrix)
-    public void print()
+    public void print() 
     {
         //We print the frame update a single frame line (not the whole frame)
         for(int i = 0; i < DIMY; i++)
         {
+            //[TO-DO] Choose the better method
             StringBuilder frame = new StringBuilder();
             for(int j = 0; j < DIMX; j++)
             {
@@ -64,18 +65,16 @@ public class Display
             System.out.println(frame);
         }
 
-        //DEPRECATED: PRINT THE WHOLE FRAME
-        /*
-        StringBuilder out = new StringBuilder();
-        for(int i = 0; i < DIMY; i++)
-        {
-            for(int j = 0; j < DIMX; j++)
-            {
-                out.append(Monitor[i][j]).append(Monitor[i][j]);
-            }
-        out.append('\n');
-        }
-        System.out.println(out);
-        */
+        // StringBuilder out = new StringBuilder();
+
+        // for (int i = 0; i < DIMY; i++) 
+        // {
+        //     for (int j = 0; j < DIMX; j++) 
+        //     {
+        //         out.append(Monitor[i][j]).append(Monitor[i][j]);
+        //     }
+        //     out.append('\n');
+        // }
+        // System.out.print(out);
     }
 }
