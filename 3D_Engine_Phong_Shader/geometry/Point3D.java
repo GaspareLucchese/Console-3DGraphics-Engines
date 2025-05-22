@@ -78,4 +78,5 @@ public class Point3D extends Point2D
         long z = Double.doubleToLongBits(Math.round(this.getZ() / epsilon) * epsilon);
         return Objects.hash(x, y, z);
     }
+
 }

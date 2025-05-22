@@ -1,9 +1,9 @@
 package scene;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +39,7 @@ public class Testing extends Thread
         boolean hasTexture = false;
 
         //Try-Catch to open and read the file
-        try (BufferedReader buffer = new BufferedReader(new FileReader("scene/Teapot.txt")))
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(path)))
         {
             String line;
             //We read every line of file and add them to the Arraylist...
@@ -60,7 +60,7 @@ public class Testing extends Thread
                     // //Add vertex textures (as Points)
                     // vertexTextures.add(new Point3D(Double.parseDouble(word[1]),Double.parseDouble(word[2]), Double.parseDouble(word[3])));
                 }
-                if (line.startsWith("vn "))
+                else if (line.startsWith("vn "))
                 {
                     hasNormals = true;
                     String[] word = line.split("\\s+");
@@ -70,7 +70,7 @@ public class Testing extends Thread
                 else if (line.startsWith("f")) 
                 {
                     String[] word = line.split("\\s+");
-                    
+
                     int[] v = new int[3];
                     //int[] vt = new int[3];
                     int[] vn = new int[3];
@@ -103,7 +103,7 @@ public class Testing extends Thread
                             String[] element = word[i + 1].split("/");
                             v[i] = Integer.parseInt(element[0]) - 1;
                             //vt[i] = Integer.parseInt(element[1]) - 1;
-                            vn[i] = Integer.parseInt(element[2]) - 1;
+                            vn[i] = Integer.parseInt(element[2]) - 1;  
                         }
                     }
 
@@ -111,15 +111,15 @@ public class Testing extends Thread
                     {
                         //If we find the vertex normals we can use them...
                         faces.addTriangle(new Triangle(
-                        vertices.get(v[0]),vertices.get(v[1]),vertices.get(v[2]), 
-                        vertexNomals.get(vn[0]), vertexNomals.get(vn[1]), vertexNomals.get(vn[2])
+                            vertices.get(v[0]), vertices.get(v[1]), vertices.get(v[2]), 
+                            vertexNomals.get(vn[0]), vertexNomals.get(vn[1]), vertexNomals.get(vn[2])
                         ));
                     }
                     else
                     {
                         //...else we save only the triangle vertices...
                         faces.addTriangle(new Triangle(
-                        vertices.get(v[0]),vertices.get(v[1]),vertices.get(v[2])
+                            vertices.get(v[0]), vertices.get(v[1]), vertices.get(v[2])
                         ));                        
                     }
                 }                
@@ -212,7 +212,7 @@ public class Testing extends Thread
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
 
-        trasformation.setMovement(0, -1, 4.4);
+        trasformation.setMovement(0, -1, 4.3);
         for(int i = 0; i < 10000; i++)
         {
             display.reset();
@@ -220,7 +220,7 @@ public class Testing extends Thread
             trasformation.setThetaY(i);
             trasformation.setThetaZ(i);
             newEngine.Rendering(faces, display, trasformation);
-            
+
             System.out.print("\033[H");  
             System.out.flush();
             display.print();

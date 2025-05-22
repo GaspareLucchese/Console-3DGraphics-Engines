@@ -30,13 +30,6 @@ public class GouraudShader
 
         for (int i = 0; i < 3; i++) 
         {
-            if (normal[i] == null) 
-            {
-                //[TO-DO] DEBUGGING
-                //System.err.println("Vertex Normal at index " + i);
-                continue;
-            }
-
             //LAMBERT REFLECTION MODEL
             double kd = 0.80;
             //To obtain the brightness value we should apply the dot product between the light vector and the the three triangle's vertex normal vectors 

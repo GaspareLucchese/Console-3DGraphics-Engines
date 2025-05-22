@@ -6,14 +6,14 @@ public class GouraudPixelShader
     //We can convert the brigthness value with a set of ASCII characters to simulate the shadow
     public static char pixelProcessing(double[] lumi, double alpha, double beta, double gamma)
     {
-        //PIXEL SHADING STAGE
+        /*PIXEL SHADING STAGE*/
         //We need to calcultate the lineare interpolation of the three brightness values
         double interpolatedLumi = alpha * lumi[0] + beta * lumi[1] + gamma * lumi[2];
         
         //We need to apply the gamma correction to the interpolated brightness value
         double gammaCorrected = Math.pow(clamp(interpolatedLumi, 0, 1), 1.0 / 2.2);
 
-        //MERGING STAGE
+        /*[MERGING STAGE]*/
         final char[] asciiScale = {'.', ':', '-', '~', '=', '+', '*', '#', '%', 'B', '@'};
 
         //We normalize the value between 0 and the (array size - 1)
