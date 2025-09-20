@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to compute the brightness of a triangle 
+//     `-===-'         based on the Lambertian reflection model.  
+
 package geometryprocessing;
 
 import geometry.Point3D;

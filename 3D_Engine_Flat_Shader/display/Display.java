@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to represent the display screen.
+//     `-===-'                              
+
 package display;
 
 //This class is used to represent the display screen

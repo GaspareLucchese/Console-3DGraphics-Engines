@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to remove the triangles that are 
+//     `-===-'         facing away from the camera        
+
 package applicationstage;
 
 import geometry.Point3D;

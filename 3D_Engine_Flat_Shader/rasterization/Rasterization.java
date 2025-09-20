@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to rasterize a triangle in 3D space i
+//     `-===-'         nto a 2D image using a z-buffer for depth testing.
+
 package rasterization;
 
 import display.Display;

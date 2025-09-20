@@ -1,10 +1,16 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to remove the triangles that are 
+//     `-===-'         facing away from the camera           
+
 package applicationstage;
 
 import geometry.Point3D;
 import geometry.Triangle;
 import scene.Mesh;
 
-//Is used to remove the triangles that that are facing away from the camera.
+//Is used to remove the triangles that that are facing away from the camera
 public class BackfaceCulling 
 {
     public static Mesh backface_culling (Mesh triangles)

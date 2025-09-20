@@ -1,3 +1,10 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to map the triangle to the screen coordinates.
+//     `-===-'         The screen coordinates are in the range [0, 1] for both x and y.
+//                     The triangle is mapped to the screen coordinates by centering it and scaling it based on the screen size.
+
 package geometryprocessing;
 
 import display.Display;

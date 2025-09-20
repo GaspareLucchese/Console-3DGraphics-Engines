@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to process the pixels of the image 
+//     `-===-'  
+
 package pixelprocessing;
 
 import geometry.Point3D;

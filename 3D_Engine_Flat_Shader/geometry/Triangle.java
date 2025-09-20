@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to represent a triangle in 3D space
+//     `-===-'             
+
 package geometry;
 
 //This class is used to represent a triangle in 3D space

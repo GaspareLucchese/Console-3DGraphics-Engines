@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to represent a 3D mesh, which 
+//     `-===-'         is a collection of triangles.  
+
 package scene;
 
 import java.util.ArrayList;

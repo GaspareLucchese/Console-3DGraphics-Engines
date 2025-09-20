@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to project 3D points into 2D space 
+//     `-===-'         using a perspective projection matrix.  
+
 package geometryprocessing;
 
 import display.Display;

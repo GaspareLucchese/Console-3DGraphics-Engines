@@ -1,3 +1,9 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to clip triangles against 
+//     `-===-'         a frustum defined by its planes  
+
 package geometryprocessing;
 
 import java.util.ArrayList;

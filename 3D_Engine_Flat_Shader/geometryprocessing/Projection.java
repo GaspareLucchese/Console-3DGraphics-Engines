@@ -1,10 +1,16 @@
+//       _o_                                   
+//  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
+// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+//  `-\       /       -Descrizione: Used to project 3D points into 2D space 
+//     `-===-'         using a perspective projection matrix.  
+
 package geometryprocessing;
 
 import display.Display;
 import geometry.Point3D;
 import geometry.Triangle;
 
-//This class is used to project 3D points into 2D space using a perspective projection matrix.
+//This class is used to project 3D points into 2D space using a perspective projection matrix
 public class Projection 
 {
     private double[][] matrixPerspective = new double[4][4];
