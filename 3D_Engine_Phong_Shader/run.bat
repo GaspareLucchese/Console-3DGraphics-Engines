@@ -10,3 +10,5 @@ mkdir out\scene 2>nul
 copy /Y scene\Teapot.txt out\scene\Teapot.txt >nul
 
 java -cp out scene.Testing
+
+pause
