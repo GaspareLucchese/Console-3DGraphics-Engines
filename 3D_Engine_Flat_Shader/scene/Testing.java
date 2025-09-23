@@ -67,7 +67,7 @@ public class Testing extends Thread
         Engine newEngine = new Engine();
         Trasformation trasformation = new Trasformation();
 
-        trasformation.setMovement(0, -1, 4.4);
+        trasformation.setMovement(0, -1, 4.3);
         for(int i = 0; i < 10000; i++)
         {
             display.reset();

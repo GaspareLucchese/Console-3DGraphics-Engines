@@ -59,28 +59,16 @@ public class Display
     //Print all the the pixels on the frame (Monitor matrix)
     public void print() 
     {
-        //We print the frame update a single frame line (not the whole frame)
-        for(int i = 0; i < DIMY; i++)
+        StringBuilder out = new StringBuilder();
+
+        for (int i = 0; i < DIMY; i++) 
         {
-            //[TO-DO] Choose the better method
-            StringBuilder frame = new StringBuilder();
-            for(int j = 0; j < DIMX; j++)
+            for (int j = 0; j < DIMX; j++) 
             {
-                frame.append(Monitor[i][j]).append(Monitor[i][j]);
+                out.append(Monitor[i][j]).append(Monitor[i][j]);
             }
-            System.out.println(frame);
+            out.append('\n');
         }
-
-        // StringBuilder out = new StringBuilder();
-
-        // for (int i = 0; i < DIMY; i++) 
-        // {
-        //     for (int j = 0; j < DIMX; j++) 
-        //     {
-        //         out.append(Monitor[i][j]).append(Monitor[i][j]);
-        //     }
-        //     out.append('\n');
-        // }
-        // System.out.print(out);
+        System.out.print(out);
     }
 }
