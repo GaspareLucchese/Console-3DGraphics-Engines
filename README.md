@@ -6,6 +6,10 @@ This repository contains three custom **software rendering engines** written in 
 - **Gouraud Shading**
 - **Phong Shading**
 
+## 📸 Demo
+
+Suzuki GSX-R with Phong Shading:
+![Phong](./demo/GSXR_Phong_Shader_Test.png)
 ---
 
 ## 🚀 Pipeline
