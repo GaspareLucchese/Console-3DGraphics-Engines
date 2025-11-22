@@ -14,6 +14,7 @@ Suzuki GSX-R with Phong Shading:
 
 ## 🚀 Pipeline
 
+- **OBJ File Parsing**: Vertices and faces extraction from a textual file
 - **Transformation stage**: 3D object transformations  
 - **Application stage**: Backface culling and Frustum culling  
 - **Geometry Processing stage**:  
@@ -29,13 +30,14 @@ Suzuki GSX-R with Phong Shading:
 ## 🛠️ Tech
 
 - **Language**: Java (no external rendering libraries)
+- **Input File Extension**: .obj / .txt with OBJ notation
 - **Output and Rendering**: ASCII terminal rendering (cmd, wsl, etc.)
 
 --- 
 
 ## 🔧 How to Run
 
-⚠️ **Prerequisite:** Java JDK must be installed on your system to compile and run this engine.
+⚠️ **Prerequisite:** Java JDK (11+) must be installed on your system to compile and run this engine.
 
 1. **Clone the repository**
    ```bash
@@ -45,7 +47,7 @@ Suzuki GSX-R with Phong Shading:
 2. **Choose the engine (Flat, Gouraud, or Phong) and navigate into its folder:**
 
 3. **Run the demo**
-  - 🐧 On WSL / Linux / macOS:
+  - 🐧 On WSL / Linux / macOS: [Recommended for smoother rendering]
     
     Run the provided run.sh script `run.sh`  
     ```bash

@@ -7,8 +7,6 @@ del sources.txt
 
 mkdir out\scene 2>nul
 
-copy /Y scene\Teapot.txt out\scene\Teapot.txt >nul
+copy /Y scene\Teapot.obj out\scene\Teapot.obj >nul
 
 java -cp out scene.Testing
-
-pause

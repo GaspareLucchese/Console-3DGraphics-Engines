@@ -1,6 +1,6 @@
 //       _o_                                   
 //  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
-// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+// ((j`=======',-'    -Data Ultima Modifica: 22/11/2025     
 //  `-\       /       -Descrizione: Used to test the engine and the display
 //     `-===-'          
 
@@ -9,7 +9,6 @@ package scene;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,20 +23,12 @@ public class Testing extends Thread
 {
     public static void main(String[] args) 
     {
-        //Load vertices and faces from a .txt file with .obj notation 
-        InputStream path = Testing.class.getClassLoader().getResourceAsStream("scene/Teapot.txt");
-
-        if (path == null) {
-            System.err.println("File not found in classpath!");
-            return;
-        }
-
         //Creation of an ArrayList and a Mesh (Triangles' ArrayList) to memorize file's rows
         List<Point3D> vectors  = new ArrayList<>();
         Mesh faces = new Mesh();
 
-        //Try-Catch to open and read the file
-        try (BufferedReader buffer = new BufferedReader(new FileReader("scene/Teapot.txt")))
+        //Try-Catch to open and read the file with .obj notation
+        try (BufferedReader buffer = new BufferedReader(new FileReader("scene/Teapot.obj")))
         {
             String line;
             //We read every line of file and add them to the Arraylist...

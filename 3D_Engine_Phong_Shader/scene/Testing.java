@@ -1,6 +1,6 @@
 //       _o_                                   
 //  ,-.'-----`.__ ;   -Developer: Gaspare Lucchese                    
-// ((j`=======',-'    -Data Ultima Modifica: 22/05/2025     
+// ((j`=======',-'    -Data Ultima Modifica: 22/11/2025     
 //  `-\       /       -Descrizione: Used to test the engine and the display
 //     `-===-'          
 
@@ -27,7 +27,7 @@ public class Testing extends Thread
     public static void main(String[] args) 
     {
         //Load vertices and faces from a .txt file with .obj notation 
-        InputStream path = Testing.class.getClassLoader().getResourceAsStream("scene/Teapot.txt");
+        InputStream path = Testing.class.getClassLoader().getResourceAsStream("scene/Teapot.obj");
 
         if (path == null) 
         {

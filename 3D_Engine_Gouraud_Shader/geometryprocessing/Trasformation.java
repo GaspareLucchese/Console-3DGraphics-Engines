@@ -55,7 +55,6 @@ public class Trasformation {
         this.setMatrixRot();
         this.setMatScaling();
         this.setMovement(moveX, moveY, distance);
-        this.setMatTranslation();
 
         for(int l = 0; l < (mesh.getMesh()).size(); l++)
         {
@@ -75,19 +74,8 @@ public class Trasformation {
 
             Triangle triTranslated = new Triangle(triRotated.getTriangle()[0], triRotated.getTriangle()[1], triRotated.getTriangle()[2]);
 
-            //[TO-DO] CHECK IF WE NEED TO COPY THE TRIANGLE AND CHECK THE IF CONDITION
             //Applying the traslation
-            triTranslated.getTriangle()[0].setZ(triTranslated.getTriangle()[0].getZ() + distance);
-            triTranslated.getTriangle()[0].setX(triTranslated.getTriangle()[0].getX() - moveX);
-            triTranslated.getTriangle()[0].setY(triTranslated.getTriangle()[0].getY() + moveY);
-            
-            triTranslated.getTriangle()[1].setZ(triTranslated.getTriangle()[1].getZ() + distance);
-            triTranslated.getTriangle()[1].setX(triTranslated.getTriangle()[1].getX() - moveX);
-            triTranslated.getTriangle()[1].setY(triTranslated.getTriangle()[1].getY() + moveY);
-            
-            triTranslated.getTriangle()[2].setZ(triTranslated.getTriangle()[2].getZ() + distance);
-            triTranslated.getTriangle()[2].setX(triTranslated.getTriangle()[2].getX() - moveX);
-            triTranslated.getTriangle()[2].setY(triTranslated.getTriangle()[2].getY() + moveY);
+            triTranslated.setTriangle(MatrixMultiplication2(triRotated.getTriangle()[0], matTranslation), MatrixMultiplication2(triRotated.getTriangle()[1], matTranslation), MatrixMultiplication2(triRotated.getTriangle()[2], matTranslation));
     
             Point3D[] originalNormals = tri.getNormals();
             //We need to apply the rotation also to the vertex normals (but not the scaling and the translation!)
@@ -123,9 +111,9 @@ public class Trasformation {
     public Point3D MatrixMultiplication2(Point3D i, double[][] m)
     {
         Point3D o = new Point3D();
-        o.setX(((i.getX())*(m[0][0]) + (i.getY())*(m[0][1]) + (i.getZ())*(m[0][2])));
-        o.setY(((i.getX())*(m[1][0]) + (i.getY())*(m[1][1]) + (i.getZ())*(m[1][2])));
-        o.setZ(((i.getX())*(m[2][0]) + (i.getY())*(m[2][1]) + (i.getZ())*(m[2][2])));
+        o.setX(((i.getX())*(m[0][0]) + (i.getY())*(m[0][1]) + (i.getZ())*(m[0][2]) + 1*m[0][3]));
+        o.setY(((i.getX())*(m[1][0]) + (i.getY())*(m[1][1]) + (i.getZ())*(m[1][2]) + 1*m[1][3]));
+        o.setZ(((i.getX())*(m[2][0]) + (i.getY())*(m[2][1]) + (i.getZ())*(m[2][2]) + 1*m[2][3]));
         
         return o;
     }
@@ -197,7 +185,6 @@ public class Trasformation {
         this.moveX = moveX;
         this.moveY = moveY;
         this.distance = distance;
-    }
-
-    
+        this.setMatTranslation();
+    }  
 }
